@@ -1,0 +1,8 @@
+tensorflow
+imgaug
+cv2
+pycocotools
+pillow
+tkinter
+keras
+pydot
