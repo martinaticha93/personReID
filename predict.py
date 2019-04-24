@@ -3,12 +3,12 @@ import pickle
 # import the necessary packages
 from keras.models import load_model
 
-from videoclassification.datareader import DataReader
-from videoclassification.generators import predict_generator
+from datareader import DataReader
+from generators import predict_generator
 
-DATA_PATH_TEST = "./data/simple_dataset_test"
-MODEL = "model"
-LABELS = "labels"
+DATA_PATH_TEST = "../data/simple_dataset_test"
+MODEL = "../model"
+LABELS = "../labels"
 
 image_sequences = DataReader.read_test_data(DATA_PATH_TEST)
 print("[INFO] loading network and label map...")

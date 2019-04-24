@@ -6,8 +6,8 @@ from keras_preprocessing.image import ImageDataGenerator
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
-from videoclassification.datareader import DataReader
-from videoclassification.generators import train_generator, predict_generator
+from datareader import DataReader
+from generators import train_generator, predict_generator
 from videoclassification.smallVGG import SmallVGGNet
 
 DATA_PATH_TRAIN = "./data/simple_data_set"
