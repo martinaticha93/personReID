@@ -6,7 +6,7 @@ from keras.models import load_model
 from videoclassification.datareader import DataReader
 from videoclassification.generators import predict_generator
 
-DATA_PATH_TEST = "/media/martina/Data/School/CTU/thesis/deep-person-reid/data/edges_hed/simple_dataset_test"
+DATA_PATH_TEST = "./data/simple_dataset_test"
 MODEL = "model"
 LABELS = "labels"
 
