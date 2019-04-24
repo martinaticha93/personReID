@@ -30,8 +30,8 @@ def train():
     model = SmallVGGNet.build(width=64, height=64, depth=3, sequence_len=SEQUENCE_LEN)
 
     INIT_LR = 0.01
-    EPOCHS = 1
-    BS = 5
+    EPOCHS = 70
+    BS = 32
 
     print("[INFO] training network...")
     opt = SGD(lr=INIT_LR, decay=INIT_LR / EPOCHS)

@@ -29,6 +29,6 @@ def train_generator(data, labels, sequence_len, batch_size, num_of_classes):
 
 def predict_generator(data,  num_of_classes):
     i = -1
-    while i < num_of_classes:
+    while i < num_of_classes - 1:
         i = i + 1
         yield data[[i], :]
