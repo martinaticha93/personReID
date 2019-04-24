@@ -1,7 +1,6 @@
 # import the necessary packages
 from keras.layers import ConvLSTM2D, Dense, BatchNormalization, Reshape, AveragePooling3D, AveragePooling2D
 from keras.models import Sequential
-from keras.utils import plot_model
 
 
 class SmallVGGNet:
@@ -40,5 +39,5 @@ class SmallVGGNet:
             units=6,
             activation='softmax'))
 
-        plot_model(model, to_file='model.png', show_shapes=True)
+        # plot_model(model, to_file='model.png', show_shapes=True)
         return model
