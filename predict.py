@@ -18,6 +18,7 @@ label_to_folder = pickle.loads(open(LABELS, "rb").read())
 predictions = model.predict_generator(
     generator=predict_generator(
         image_sequences,
-        batch_size=1,
         num_of_classes=image_sequences.shape[0]),
     steps=image_sequences.shape[0])
+
+print(label_to_folder[predictions[0].argmax()])
