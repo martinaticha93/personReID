@@ -1,5 +1,6 @@
 import pickle
 
+import tensorflow as tf
 from keras.optimizers import SGD
 from keras_preprocessing.image import ImageDataGenerator
 from sklearn.metrics import classification_report
@@ -13,6 +14,7 @@ DATA_PATH_TRAIN = "../data/simple_data_set"
 SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
+GPU = "4"
 
 
 def get_generators():
@@ -52,9 +54,9 @@ def train():
 
 
 if __name__ == '__main__':
-
-    model, label_to_folder = train()
-    model.save(MODEL)
-    f = open(LABELS, "wb")
-    f.write(pickle.dumps(label_to_folder))
-    f.close()
+    with tf.device('/gpu:' + GPU):
+        model, label_to_folder = train()
+        model.save(MODEL)
+        f = open(LABELS, "wb")
+        f.write(pickle.dumps(label_to_folder))
+        f.close()
