@@ -9,8 +9,7 @@ from videoclassification.datareader import DataReader
 from videoclassification.generators import train_generator, predict_generator
 from videoclassification.smallVGG import SmallVGGNet
 
-DATA_PATH_TRAIN = "/media/martina/Data/School/CTU/thesis/deep-person-reid/data/edges_hed/simple_dataset_train"
-DATA_PATH_TEST = "/media/martina/Data/School/CTU/thesis/deep-person-reid/data/edges_hed/simple_dataset_test"
+DATA_PATH_TRAIN = "../data/simple_data_set"
 SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
