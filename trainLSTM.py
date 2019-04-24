@@ -1,6 +1,6 @@
 import pickle
-
 import tensorflow as tf
+
 from keras.optimizers import SGD
 from keras_preprocessing.image import ImageDataGenerator
 from sklearn.metrics import classification_report
@@ -10,7 +10,7 @@ from videoclassification.datareader import DataReader
 from videoclassification.generators import train_generator, predict_generator
 from videoclassification.smallVGG import SmallVGGNet
 
-DATA_PATH_TRAIN = "../data/simple_data_set"
+DATA_PATH_TRAIN = "./data/simple_data_set"
 SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
@@ -30,8 +30,8 @@ def train():
     model = SmallVGGNet.build(width=64, height=64, depth=3, sequence_len=SEQUENCE_LEN)
 
     INIT_LR = 0.01
-    EPOCHS = 70
-    BS = 32
+    EPOCHS = 1
+    BS = 5
 
     print("[INFO] training network...")
     opt = SGD(lr=INIT_LR, decay=INIT_LR / EPOCHS)
@@ -46,9 +46,9 @@ def train():
 
     print("[INFO] evaluating network...")
     predictions = model.predict_generator(
-        generator=predict_generator(trainX, batch_size=1, num_of_classes=trainX.shape[0]), steps=trainX.shape[0])
+        generator=predict_generator(trainX, num_of_classes=trainX.shape[0]), steps=trainX.shape[0])
     predictions = predictions.reshape(-1, num_of_classes)
-    print(classification_report(trainY, predictions.reshape(-1, 9).argmax(axis=0)))
+    print(classification_report(trainY, predictions.reshape(-1, trainX.shape[0]).argmax(axis=0)))
 
     return model, label_to_folder
 

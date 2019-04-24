@@ -27,7 +27,7 @@ def train_generator(data, labels, sequence_len, batch_size, num_of_classes):
         yield x_train, y_train
 
 
-def predict_generator(data, batch_size, num_of_classes):
+def predict_generator(data,  num_of_classes):
     i = -1
     while i < num_of_classes:
         i = i + 1
