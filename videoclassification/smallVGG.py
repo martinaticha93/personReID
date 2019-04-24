@@ -1,5 +1,5 @@
 # import the necessary packages
-from keras.layers import ConvLSTM2D, Dense, BatchNormalization, Reshape, AveragePooling3D
+from keras.layers import ConvLSTM2D, Dense, BatchNormalization, Reshape, AveragePooling3D, AveragePooling2D
 from keras.models import Sequential
 from keras.utils import plot_model
 
@@ -8,7 +8,6 @@ class SmallVGGNet:
     @staticmethod
     def build(width, height, depth, sequence_len):
         print("build")
-        # initialize the model along with the input shape to be "channels last" and the channels dimension itself
         input_shape = (sequence_len, height, width, depth)
 
         model = Sequential()
@@ -32,14 +31,14 @@ class SmallVGGNet:
             filters=40,
             kernel_size=(3, 3),
             padding='same',
-            return_sequences=True))
+            return_sequences=False))
         model.add(BatchNormalization())
 
-        model.add(AveragePooling3D((1, 64, 64)))
+        model.add(AveragePooling2D(( 64, 64)))
         model.add(Reshape((-1, 40)))
         model.add(Dense(
             units=6,
-            activation='sigmoid'))
+            activation='softmax'))
 
         plot_model(model, to_file='model.png', show_shapes=True)
         return model
