@@ -52,6 +52,7 @@ def train():
 
 
 if __name__ == '__main__':
+
     model, label_to_folder = train()
     model.save(MODEL)
     f = open(LABELS, "wb")
