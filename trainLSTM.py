@@ -1,4 +1,5 @@
 import pickle
+import tensorflow as tf
 
 from keras.callbacks import Callback
 from keras.optimizers import SGD
@@ -69,9 +70,9 @@ def train():
 
 
 if __name__ == '__main__':
-    # with tf.device('/gpu:' + GPU):
-    model, label_to_folder = train()
-    model.save(MODEL)
-    f = open(LABELS, "wb")
-    f.write(pickle.dumps(label_to_folder))
-    f.close()
+    with tf.device('/gpu:' + GPU):
+        model, label_to_folder = train()
+        model.save(MODEL)
+        f = open(LABELS, "wb")
+        f.write(pickle.dumps(label_to_folder))
+        f.close()
