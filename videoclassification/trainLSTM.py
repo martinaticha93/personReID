@@ -4,9 +4,9 @@ from keras.callbacks import Callback
 from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
 
-from datareader import DataReader
-from generators import train_generator
 from LSTMNetwork import LSTMNetwork
+from datareader import DataReader
+from generators import train_generator, predict_generator
 
 DATA_PATH_TRAIN = "../data/simple_data_set_train"
 SEQUENCE_LEN = 9
@@ -21,9 +21,9 @@ class TestCallback(Callback):
 
     def on_epoch_end(self, epoch, logs={}):
         x, y = self.test_data
-        # predictions = self.model.predict_generator(
-        #     generator=predict_generator(x, num_of_classes=x.shape[0]), steps=x.shape[0])
-        # predictions = predictions.reshape(30, -1)
+        predictions = self.model.predict_generator(
+            generator=predict_generator(x, num_of_classes=x.shape[0]), steps=x.shape[0])
+        predictions = predictions.reshape(30, -1)
         loss, acc = self.model.evaluate_generator(
             generator=train_generator(x, y, SEQUENCE_LEN, 10, 6, self.label_to_folder), steps=1)
         print('\nTesting loss: {}, acc: {}\n'.format(loss, acc))

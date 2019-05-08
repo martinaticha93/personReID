@@ -1,12 +1,11 @@
 import pickle
 
-# import the necessary packages
 from keras.models import load_model
 
 from datareader import DataReader
 from generators import predict_generator
 
-DATA_PATH = "data/simple_data_set_test/0078"
+DATA_PATH = "../data/simple_data_set_test/0078"
 MODEL = "model"
 LABELS = "labels"
 
