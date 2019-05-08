@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 
 from datareader import DataReader
 from generators import train_generator
-from videoclassification.smallVGG import SmallVGGNet
+from videoclassification.LSTMNetwork import LSTMNetwork
 
 DATA_PATH_TRAIN = "./data/simple_data_set_train"
 SEQUENCE_LEN = 9
@@ -33,7 +33,7 @@ def train():
     print("[INFO] obtaining data...")
     data, labels, num_of_classes, label_to_folder = DataReader.prepare_data(DATA_PATH_TRAIN, SEQUENCE_LEN)
     trainX, testX, trainY, testY = train_test_split(data, labels, test_size=0.00, random_state=42)
-    model = SmallVGGNet.build(width=64, height=64, depth=3, sequence_len=SEQUENCE_LEN)
+    model = LSTMNetwork.build(width=64, height=64, depth=3, sequence_len=SEQUENCE_LEN)
 
     INIT_LR = 0.1
     EPOCHS = 100
