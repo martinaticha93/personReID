@@ -38,4 +38,4 @@ def predict_generator(data, num_of_classes):
     i = -1
     while i < num_of_classes - 1:
         i = i + 1
-        yield data[[i], :]
+        yield data[[i], 0:9]

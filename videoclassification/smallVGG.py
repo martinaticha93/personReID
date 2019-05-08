@@ -4,7 +4,6 @@ from keras.models import Sequential
 
 
 # from keras.utils import plot_model
-from keras.utils import plot_model
 
 
 class SmallVGGNet:
@@ -47,11 +46,12 @@ class SmallVGGNet:
         model.add(Reshape((-1, 40)))
         model.add(Dense(
             units=20,
-            activation='relu', kernel_initializer='random_uniform',
+            activation='relu',
+            kernel_initializer='random_uniform',
             bias_initializer='zeros'))
         model.add(Dense(
-            units=2,
+            units=6,
             activation='softmax'))
 
-        plot_model(model, to_file='model.png', show_shapes=True)
+        # plot_model(model, to_file='model.png', show_shapes=True)
         return model
