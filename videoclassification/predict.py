@@ -6,11 +6,11 @@ from keras.models import load_model
 from datareader import DataReader
 from generators import predict_generator
 
-DATA_PATH_TEST = "data/simple_data_set_test/0078"
+DATA_PATH = "data/simple_data_set_test/0078"
 MODEL = "model"
 LABELS = "labels"
 
-image_sequences = DataReader.read_test_data(DATA_PATH_TEST)
+image_sequences = DataReader.read_test_data(DATA_PATH)
 print("[INFO] loading network and label map...")
 model = load_model(MODEL)
 label_to_folder = pickle.loads(open(LABELS, "rb").read())

@@ -6,9 +6,9 @@ from sklearn.model_selection import train_test_split
 
 from datareader import DataReader
 from generators import train_generator
-from videoclassification.LSTMNetwork import LSTMNetwork
+from LSTMNetwork import LSTMNetwork
 
-DATA_PATH_TRAIN = "./data/simple_data_set_train"
+DATA_PATH_TRAIN = "../data/simple_data_set_train"
 SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
