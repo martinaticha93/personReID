@@ -16,6 +16,7 @@ SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
 GPU = "7"
+from sklearn.model_selection import GridSearchCV
 
 
 class TestCallback(Callback):
@@ -38,10 +39,21 @@ def train():
     trainX, trainY, testX, testY, num_of_classes, label_to_folder = DataReader.prepare_data(DATA_PATH_TRAIN,
                                                                                             SEQUENCE_LEN)
 
-    model = LSTMModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
-    model.fit()
+    tuned_params = {
+        "EPOCHS": [1, 2, 3]
+    }
 
-    return model.get_model(), label_to_folder
+    model = LSTMModel(num_of_classes, len(trainX), len(testX))
+
+    gs = GridSearchCV(model, tuned_params)
+    fit_params = {
+        'label_to_folder': label_to_folder,
+        'testX': testX,
+        'testY': testY
+    }
+    gs.fit(trainX, trainY, groups=None, fit_params=fit_params)
+
+    return None, None
 
 
 if __name__ == '__main__':

@@ -16,26 +16,22 @@ GPU = "7"
 
 
 class LSTMModel(BaseEstimator, ClassifierMixin):
-    def __init__(self, trainX, trainY, testX, testY, num_of_classes, label_to_folder):
-        self.trainX = trainX
-        self.trainY = trainY
-        self.testX = testX
-        self.testY = testY
+    def __init__(self, num_of_classes, training_samples, test_samples, EPOCHS=None):
         self.num_of_classes = num_of_classes
-        self.label_to_folder = label_to_folder
 
         self.model = LSTMNetwork.build(width=64, height=64, depth=3, sequence_len=SEQUENCE_LEN,
                                        num_of_classes=num_of_classes)
-        self.TRAINING_SAMPLES = len(trainX)
-        self.TEST_SAMPLES = len(testX)
+        self.EPOCHS = EPOCHS
+        self.training_samples = training_samples
+        self.test_samples = test_samples
 
         self.INIT_LR = 0.004
-        self.EPOCHS = 500
+        # self.EPOCHS = 500
         self.BS = 30
 
-        print("[INFO] train data size: " + str(self.TRAINING_SAMPLES))
-        print("[INFO] test data size: " + str(self.TEST_SAMPLES))
-        print("[INFO] steps per epoch: " + str(self.TRAINING_SAMPLES / self.BS))
+        print("[INFO] train data size: " + str(self.training_samples))
+        print("[INFO] test data size: " + str(self.test_samples))
+        print("[INFO] steps per epoch: " + str(self.training_samples / self.BS))
 
         self.tensorboard = TensorBoard(log_dir="logs/{}".format(self.INIT_LR))
 
@@ -43,14 +39,15 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         opt = SGD(lr=self.INIT_LR, decay=self.INIT_LR / num_of_classes)
         self.model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["categorical_accuracy"])
 
-    def fit(self):
+    def fit(self, trainX, trainY, fit_params):
+        testX = fit_params['testX']
+        testY = fit_params['testY']
+        label_to_folder = fit_params['label_to_folder']
         self.model.fit_generator(
-            generator=train_generator(self.trainX, self.trainY, SEQUENCE_LEN, self.BS, self.num_of_classes,
-                                      self.label_to_folder),
-            steps_per_epoch=self.TRAINING_SAMPLES / self.BS,
-            validation_data=train_generator(self.testX, self.testY, SEQUENCE_LEN, self.BS, self.num_of_classes,
-                                            self.label_to_folder),
-            validation_steps=self.TRAINING_SAMPLES / self.BS,
+            generator=train_generator(trainX, trainY, SEQUENCE_LEN, self.BS, self.num_of_classes, label_to_folder),
+            steps_per_epoch=self.training_samples / self.BS,
+            validation_data=train_generator(testX, testY, SEQUENCE_LEN, self.BS, self.num_of_classes, label_to_folder),
+            validation_steps=self.training_samples / self.BS,
             epochs=self.EPOCHS,
             verbose=1,
             callbacks=[self.tensorboard]
