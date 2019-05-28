@@ -3,10 +3,8 @@ import time
 
 import tensorflow as tf
 from keras.callbacks import Callback
-from keras.callbacks import TensorBoard
-from keras.optimizers import SGD
 
-from LSTMNetwork import LSTMNetwork
+from LSTMModel import LSTMModel
 from datareader import DataReader
 from generators import train_generator, predict_generator
 
@@ -39,35 +37,11 @@ def train():
     print("[INFO] obtaining data...")
     trainX, trainY, testX, testY, num_of_classes, label_to_folder = DataReader.prepare_data(DATA_PATH_TRAIN,
                                                                                             SEQUENCE_LEN)
-    model = LSTMNetwork.build(width=64, height=64, depth=3, sequence_len=SEQUENCE_LEN, num_of_classes=num_of_classes)
-    TRAINING_SAMPLES = len(trainX)
-    TEST_SAMPLES = len(testX)
 
-    INIT_LR = 0.004
-    EPOCHS = 500
-    BS = 30
+    model = LSTMModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
+    model.fit()
 
-    print("[INFO] train data size: " + str(TRAINING_SAMPLES))
-    print("[INFO] test data size: " + str(TEST_SAMPLES))
-    print("[INFO] steps per epoch: " + str(TRAINING_SAMPLES / BS))
-
-    tensorboard = TensorBoard(log_dir="logs/{}".format(INIT_LR))
-
-    print("[INFO] training network...")
-    opt = SGD(lr=INIT_LR, decay=INIT_LR / num_of_classes)
-    model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["categorical_accuracy"])
-
-    model.fit_generator(
-        generator=train_generator(trainX, trainY, SEQUENCE_LEN, BS, num_of_classes, label_to_folder),
-        steps_per_epoch=TRAINING_SAMPLES / BS,
-        validation_data=train_generator(testX, testY, SEQUENCE_LEN, BS, num_of_classes, label_to_folder),
-        validation_steps=TRAINING_SAMPLES / BS,
-        epochs=EPOCHS,
-        verbose=1,
-        callbacks=[tensorboard]
-    )
-
-    return model, label_to_folder
+    return model.get_model(), label_to_folder
 
 
 if __name__ == '__main__':
