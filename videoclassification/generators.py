@@ -20,18 +20,14 @@ from keras.utils import to_categorical
 #                 batches have been seen by the model.
 def train_generator(data, labels, sequence_len, batch_size, num_of_classes, dict):
     while True:
-        #     for j in range(29):
-        #         for i in range(9):
-        #             plt.imshow(data[j][i])
-        #             plt.show()
-        # idxs = np.random.randint(data.shape[0], size=batch_size)
-        # x_train = data[idxs, :]
-        # y_train = labels[idxs]
-        x_train = data
-        y_train = labels
+        idxs = np.random.choice(data.shape[0], size=batch_size, replace=False)
+        x_train = data[idxs, :]
+        y_train = labels[idxs]
+        # x_train = data
+        # y_train = labels
         y_train = np.array([np.tile(y_train, (1, 1))]).transpose()
         y_train = to_categorical(y=y_train, num_classes=num_of_classes)
-        yield x_train, y_train
+        yield x_train, y_train.reshape(y_train.shape[0], y_train.shape[2])
 
 
 def predict_generator(data, num_of_classes):
