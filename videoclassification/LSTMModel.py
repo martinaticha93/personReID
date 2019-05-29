@@ -46,7 +46,7 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         self.label_to_folder = fit_params['label_to_folder']
         self.model.fit_generator(
             generator=train_generator(trainX, trainY, self.BS, self.num_of_classes, self.label_to_folder),
-            steps_per_epoch=self.training_samples / (50*self.BS),
+            steps_per_epoch=self.training_samples / (self.BS),
             validation_data=train_generator(
                 testX,
                 testY,

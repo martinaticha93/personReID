@@ -11,7 +11,7 @@ from generators import train_generator, predict_generator
 BBOX_TRAIN = "../data/bbox_train_"
 SIMPLE = "../data/simple_data_set"
 
-DATA_PATH_TRAIN = SIMPLE
+DATA_PATH_TRAIN = BBOX_TRAIN
 SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
@@ -40,7 +40,7 @@ def train():
                                                                                             SEQUENCE_LEN)
 
     tuned_params = {
-        "EPOCHS": [1, 2, 3]
+        "EPOCHS": [20, 30]
     }
 
     model = LSTMModel(num_of_classes, len(trainX), len(testX))
