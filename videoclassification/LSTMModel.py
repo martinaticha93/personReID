@@ -6,9 +6,9 @@ from LSTMNetwork import LSTMNetwork
 from generators import train_generator, predict_generator
 
 BBOX_TRAIN = "../data/bbox_train_"
-SIMPLE = "../data/simple_data_set_train"
+SIMPLE = "../data/simple_data_set_test"
 
-DATA_PATH_TRAIN = SIMPLE
+# DATA_PATH_TRAIN = SIMPLE
 SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
@@ -27,7 +27,7 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
 
         self.INIT_LR = 0.004
         # self.EPOCHS = 500
-        self.BS = 30
+        self.BS = 5
 
         print("[INFO] train data size: " + str(self.training_samples))
         print("[INFO] test data size: " + str(self.test_samples))
@@ -40,16 +40,16 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         self.model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["categorical_accuracy"])
 
     def fit(self, trainX, trainY, fit_params):
+        print("[INFO] fitting..")
         testX = fit_params['testX']
         testY = fit_params['testY']
         self.label_to_folder = fit_params['label_to_folder']
         self.model.fit_generator(
-            generator=train_generator(trainX, trainY, SEQUENCE_LEN, self.BS, self.num_of_classes, self.label_to_folder),
-            steps_per_epoch=self.training_samples / self.BS,
+            generator=train_generator(trainX, trainY, self.BS, self.num_of_classes, self.label_to_folder),
+            steps_per_epoch=self.training_samples / (50*self.BS),
             validation_data=train_generator(
                 testX,
                 testY,
-                SEQUENCE_LEN,
                 self.BS,
                 self.num_of_classes,
                 self.label_to_folder),
@@ -60,11 +60,12 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         )
 
     def predict(self, X):
+        print("[INFO] predicting..")
         return self.model.predict_generator(generator=predict_generator(X, num_of_classes=X.shape[0]), steps=X.shape[0])
 
     def score(self, X, y, **kwargs):
         _, acc = self.model.evaluate_generator(
-            generator=train_generator(X, y, SEQUENCE_LEN, 10, 6, self.label_to_folder), steps=1)
+            generator=train_generator(X, y, self.BS, self.num_of_classes, self.label_to_folder), steps=1)
         return acc
 
     def get_model(self):

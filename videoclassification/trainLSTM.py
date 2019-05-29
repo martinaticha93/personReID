@@ -9,9 +9,9 @@ from datareader import DataReader
 from generators import train_generator, predict_generator
 
 BBOX_TRAIN = "../data/bbox_train_"
-SIMPLE = "data/simple_data_set_train"
+SIMPLE = "../data/simple_data_set"
 
-DATA_PATH_TRAIN = BBOX_TRAIN
+DATA_PATH_TRAIN = SIMPLE
 SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
