@@ -30,7 +30,7 @@ class TestCallback(Callback):
             generator=predict_generator(x, num_of_classes=x.shape[0]), steps=x.shape[0])
         predictions = predictions.reshape(30, -1)
         loss, acc = self.model.evaluate_generator(
-            generator=train_generator(x, y, SEQUENCE_LEN, 10, 6, self.label_to_folder), steps=1)
+            generator=train_generator(x, y, 10, 6, self.label_to_folder), steps=1)
         print('\nTesting loss: {}, acc: {}\n'.format(loss, acc))
 
 
@@ -40,7 +40,7 @@ def train():
                                                                                             SEQUENCE_LEN)
 
     tuned_params = {
-        "EPOCHS": [20, 30]
+        "EPOCHS": [5, 10]
     }
 
     model = LSTMModel(num_of_classes, len(trainX), len(testX))

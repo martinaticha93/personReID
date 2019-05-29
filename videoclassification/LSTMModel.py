@@ -27,7 +27,7 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
 
         self.INIT_LR = 0.004
         # self.EPOCHS = 500
-        self.BS = 5
+        self.BS = 30
 
         print("[INFO] train data size: " + str(self.training_samples))
         print("[INFO] test data size: " + str(self.test_samples))
