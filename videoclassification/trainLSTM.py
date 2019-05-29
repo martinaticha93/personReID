@@ -53,6 +53,7 @@ def train():
     }
     gs.fit(trainX, trainY, groups=None, fit_params=fit_params)
 
+    print(sorted(gs.cv_results_.keys()))
     return None, None
 
 
@@ -60,9 +61,9 @@ if __name__ == '__main__':
     start = int(round(time.time()))
     with tf.device('/gpu:' + GPU):
         model, label_to_folder = train()
-        end = int(round(time.time()))
-        print("[INFO] the training took..." + str(end - start) + "second")
-        model.save(MODEL)
-        f = open(LABELS, "wb")
-        f.write(pickle.dumps(label_to_folder))
-        f.close()
+        # end = int(round(time.time()))
+        # print("[INFO] the training took..." + str(end - start) + "second")
+        # model.save(MODEL)
+        # f = open(LABELS, "wb")
+        # f.write(pickle.dumps(label_to_folder))
+        # f.close()
