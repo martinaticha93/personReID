@@ -10,7 +10,7 @@ BS = 30
 
 class LSTMModel(BaseEstimator, ClassifierMixin):
     def __init__(
-            self, num_of_classes, training_samples, test_samples, sequence_len=9, EPOCHS=None, INIT_LR=None,
+            self, num_of_classes, training_samples, test_samples, sequence_len=9, EPOCHS=20, INIT_LR=0.01,
             DECAY_FACTOR=None):
         self.num_of_classes = num_of_classes
         self.EPOCHS = EPOCHS
