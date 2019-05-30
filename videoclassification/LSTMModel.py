@@ -6,7 +6,7 @@ from LSTMNetwork import LSTMNetwork
 from generators import train_generator, predict_generator
 
 INIT_LR = 0.004
-BS = 2
+BS = 30
 
 
 class LSTMModel(BaseEstimator, ClassifierMixin):
@@ -39,8 +39,6 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
 
     def fit(self, trainX, trainY, fit_params):
         print("[INFO] fitting..")
-        print(len(trainX))
-        print(trainY)
         testX = fit_params['testX']
         testY = fit_params['testY']
         self.label_to_folder = fit_params['label_to_folder']
@@ -66,6 +64,7 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
     def score(self, X, y, **kwargs):
         _, acc = self.model.evaluate_generator(
             generator=train_generator(X, y, BS, self.num_of_classes, self.label_to_folder), steps=1)
+        print("[INFO] score.. " + str(acc))
         return acc
 
     def get_model(self):
