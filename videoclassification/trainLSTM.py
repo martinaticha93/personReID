@@ -11,7 +11,7 @@ from generators import train_generator, predict_generator
 BBOX_TRAIN = "../data/bbox_train_"
 SIMPLE = "../data/simple_data_set"
 
-DATA_PATH_TRAIN = BBOX_TRAIN
+DATA_PATH_TRAIN = SIMPLE
 SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
@@ -40,7 +40,7 @@ def train():
                                                                                             SEQUENCE_LEN)
 
     tuned_params = {
-        "EPOCHS": [1]
+        "EPOCHS": [5, 10]
     }
 
     model = LSTMModel(
@@ -50,7 +50,6 @@ def train():
     )
 
     cv = list(GroupShuffleSplit().split(trainX, trainY, groups_train))
-    print(cv)
     gs = GridSearchCV(model, tuned_params, cv=cv)
     fit_params = {
         'label_to_folder': label_to_folder,
