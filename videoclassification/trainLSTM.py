@@ -59,6 +59,7 @@ def train():
     gs.fit(trainX, trainY, groups=trainY, fit_params=fit_params)
 
     print(sorted(gs.cv_results_.keys()))
+    print(gs.best_params_)
     return None, None
 
 
