@@ -1,8 +1,8 @@
-import pickle
 import time
 
 import tensorflow as tf
 from keras.callbacks import Callback
+from sklearn.model_selection import GridSearchCV, GroupShuffleSplit
 
 from LSTMModel import LSTMModel
 from datareader import DataReader
@@ -11,12 +11,12 @@ from generators import train_generator, predict_generator
 BBOX_TRAIN = "../data/bbox_train_"
 SIMPLE = "../data/simple_data_set"
 
-DATA_PATH_TRAIN = BBOX_TRAIN
+DATA_PATH_TRAIN = SIMPLE
 SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
 GPU = "7"
-from sklearn.model_selection import GridSearchCV
+
 
 
 class TestCallback(Callback):
@@ -36,22 +36,28 @@ class TestCallback(Callback):
 
 def train():
     print("[INFO] obtaining data...")
-    trainX, trainY, testX, testY, num_of_classes, label_to_folder = DataReader.prepare_data(DATA_PATH_TRAIN,
+    trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(DATA_PATH_TRAIN,
                                                                                             SEQUENCE_LEN)
 
     tuned_params = {
-        "EPOCHS": [5, 10]
+        "EPOCHS": [1]
     }
 
-    model = LSTMModel(num_of_classes, len(trainX), len(testX))
+    model = LSTMModel(
+        num_of_classes=num_of_classes,
+        training_samples=len(trainX),
+        test_samples=len(testX)
+    )
 
-    gs = GridSearchCV(model, tuned_params)
+    cv = GroupShuffleSplit().split(trainX, trainY, groups_train)
+
+    gs = GridSearchCV(model, tuned_params, cv=cv)
     fit_params = {
         'label_to_folder': label_to_folder,
         'testX': testX,
         'testY': testY
     }
-    gs.fit(trainX, trainY, groups=None, fit_params=fit_params)
+    gs.fit(trainX, trainY, groups=trainY, fit_params=fit_params)
 
     print(sorted(gs.cv_results_.keys()))
     return None, None

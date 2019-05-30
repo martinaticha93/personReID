@@ -14,9 +14,11 @@ class DataReader:
         data_test = []
         labels_train = []
         labels_test = []
+        groups_train = []
         label_to_folder = {}
         num_of_folders = -1
         current_camera = ""
+        number_of_identical_shots = 0
 
         for folder in os.listdir(data_path):
             identity_data = {}
@@ -53,12 +55,14 @@ class DataReader:
 
             test_data_partition = math.ceil(num_of_sequences_in_folder * test_data_percentage)
             added_test_data = 0
-            for _, value in identity_data.items():
+            for i, value in identity_data.items():
                 if added_test_data < test_data_partition:
                     data_test.extend(value)
                     labels_test.extend(np.full((len(value)), num_of_folders))
                     added_test_data = added_test_data + len(value)
                 else:
+                    groups_train.extend([number_of_identical_shots for _ in range(len(value))])
+                    number_of_identical_shots = number_of_identical_shots + 1
                     data_train.extend(value)
                     labels_train.extend(np.full((len(value)), num_of_folders))
             print("[INFO] loaded identity " + folder)
@@ -68,7 +72,7 @@ class DataReader:
         labels_train = np.array(labels_train)
         labels_test = np.array(labels_test)
 
-        return data_train, labels_train, data_test, labels_test, num_of_folders + 1, label_to_folder
+        return data_train, labels_train, data_test, labels_test, num_of_folders + 1, label_to_folder, groups_train
 
     @staticmethod
     def read_test_data(data_path):
