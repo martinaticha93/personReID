@@ -40,7 +40,7 @@ def train():
                                                                                             SEQUENCE_LEN)
 
     tuned_params = {
-        "EPOCHS": [1]
+        "EPOCHS": [5]
     }
 
     model = LSTMModel(
