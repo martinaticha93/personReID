@@ -1,11 +1,11 @@
+from keras.callbacks import TensorBoard
 from keras.optimizers import SGD
 from sklearn.base import BaseEstimator, ClassifierMixin
 
 from LSTMNetwork import LSTMNetwork
 from generators import train_generator, predict_generator
 
-# INIT_LR = 0.004
-BS = 2
+BS = 30
 
 
 class LSTMModel(BaseEstimator, ClassifierMixin):
@@ -18,7 +18,6 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         self.training_samples = training_samples
         self.test_samples = test_samples
         self.DECAY_FACTOR = DECAY_FACTOR
-        # self.EPOCHS = 500
         self.SEQUENCE_LEN = sequence_len
 
         self.model = LSTMNetwork.build(
@@ -33,7 +32,7 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         print("[INFO] test data size: " + str(self.test_samples))
         print("[INFO] steps per epoch: " + str(self.training_samples / BS))
 
-        # self.tensorboard = TensorBoard(log_dir="logs/{}".format(INIT_LR))
+        self.tensorboard = TensorBoard(log_dir="logs/{}".format(INIT_LR))
 
         print("[INFO] training network...")
         opt = SGD(lr=INIT_LR, decay=INIT_LR / (DECAY_FACTOR * num_of_classes))
@@ -46,7 +45,7 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         self.label_to_folder = fit_params['label_to_folder']
         self.model.fit_generator(
             generator=train_generator(trainX, trainY, BS, self.num_of_classes, self.label_to_folder),
-            steps_per_epoch=self.training_samples / (BS),
+            steps_per_epoch=self.training_samples / BS,
             validation_data=train_generator(
                 testX,
                 testY,
@@ -55,8 +54,8 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
                 self.label_to_folder),
             validation_steps=self.training_samples / BS,
             epochs=self.EPOCHS,
-            verbose=1
-            # callbacks=[self.tensorboard]
+            verbose=1,
+            callbacks=[self.tensorboard]
         )
 
     def predict(self, X):
