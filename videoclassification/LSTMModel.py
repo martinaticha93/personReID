@@ -5,7 +5,7 @@ from LSTMNetwork import LSTMNetwork
 from generators import train_generator, predict_generator
 
 # INIT_LR = 0.004
-BS = 30
+BS = 2
 
 
 class LSTMModel(BaseEstimator, ClassifierMixin):
