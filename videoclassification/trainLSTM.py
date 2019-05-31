@@ -40,9 +40,9 @@ def train():
                                                                                             SEQUENCE_LEN)
 
     tuned_params = {
-        "EPOCHS": [20, 50, 70],
+        "EPOCHS": [20, 50, 70, 100],
         "INIT_LR": [0.01, 0.004, 0.001, 0.0004],
-        "DECAY_FACTOR": [1]
+        "DECAY_FACTOR": [0.8, 1, 1.2]
     }
 
     model = LSTMModel(
