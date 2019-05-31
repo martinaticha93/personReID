@@ -17,6 +17,7 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         self.INIT_LR = INIT_LR
         self.training_samples = training_samples
         self.test_samples = test_samples
+        self.DECAY_FACTOR = DECAY_FACTOR
         # self.EPOCHS = 500
         self.SEQUENCE_LEN = sequence_len
 
