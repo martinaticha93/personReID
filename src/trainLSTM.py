@@ -11,8 +11,8 @@ from generators import train_generator, predict_generator
 
 BBOX_TRAIN = "../data/bbox_train_"
 SIMPLE = "../data/simple_data_set"
-MARS_SERVER = "../data/mars/first"
-MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/deep-person-reid/data/mars/first'
+MARS_SERVER = "../data/mars"
+MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/deep-person-reid/data/mars/test'
 
 DATA_PATH_TRAIN = MARS_SERVER
 SEQUENCE_LEN = 9
@@ -43,21 +43,12 @@ def train():
         SEQUENCE_LEN
     )
 
-    pickle.dump(trainX, open("trainX_1.p", "wb"))
-    pickle.dump(trainY, open("trainY_1.p", "wb"))
-    pickle.dump(testX, open("testX_1.p", "wb"))
-    pickle.dump(testY, open("testY_1.p", "wb"))
-    pickle.dump(num_of_classes, open("num_of_classes_1.p", "wb"))
-    pickle.dump(label_to_folder, open("label_to_folder_1.p", "wb"))
+    pickle.dump(trainY, open("trainY.p", "wb"))
+    pickle.dump(testY, open("testY.p", "wb"))
     pickle.dump(groups_train, open("groups_train_1.p", "wb"))
 
-    trainX = pickle.load(open("trainX_1.p", "rb"))
-    trainY = pickle.load(open("trainY_1.p", "rb"))
-    testX = pickle.load(open("testX_1.p", "rb"))
-    testY = pickle.load(open("testY_1.p", "rb"))
-    num_of_classes = pickle.load(open("num_of_classes_1.p", "rb"))
-    label_to_folder = pickle.load(open("label_to_folder_1.p", "rb"))
-    groups_train = pickle.load(open("groups_train_1.p", "rb"))
+    # trainY = pickle.load(open("trainY_1.p", "rb"))
+    # groups_train = pickle.load(open("groups_train_1.p", "rb"))
 
     tuned_params = {
         "EPOCHS": [100],
