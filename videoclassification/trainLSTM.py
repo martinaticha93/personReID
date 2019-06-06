@@ -1,4 +1,5 @@
 import time
+import pickle
 
 import tensorflow as tf
 from keras.callbacks import Callback
@@ -19,7 +20,6 @@ LABELS = "labels"
 GPU = "7"
 
 
-
 class TestCallback(Callback):
     def __init__(self, test_data, label_to_folder):
         self.test_data = test_data
@@ -37,8 +37,26 @@ class TestCallback(Callback):
 
 def train():
     print("[INFO] obtaining data...")
-    trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(DATA_PATH_TRAIN,
-                                                                                            SEQUENCE_LEN)
+    trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
+        DATA_PATH_TRAIN,
+        SEQUENCE_LEN
+    )
+
+    pickle.dump(trainX, open("save.p", "wb"))
+    pickle.dump(trainY, open("save.p", "wb"))
+    pickle.dump(testX, open("save.p", "wb"))
+    pickle.dump(testY, open("save.p", "wb"))
+    pickle.dump(num_of_classes, open("save.p", "wb"))
+    pickle.dump(label_to_folder, open("save.p", "wb"))
+    pickle.dump(groups_train, open("save.p", "wb"))
+
+    trainX = pickle.load(open("trainX.p", "rb"))
+    trainY = pickle.load(open("trainY.p", "rb"))
+    testX = pickle.load(open("testX.p", "rb"))
+    testY = pickle.load(open("testY.p", "rb"))
+    num_of_classes = pickle.load(open("num_of_classes.p", "rb"))
+    label_to_folder = pickle.load(open("label_to_folder.p", "rb"))
+    groups_train = pickle.load(open("groups_train.p", "rb"))
 
     tuned_params = {
         "EPOCHS": [100],
