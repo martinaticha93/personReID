@@ -2,6 +2,7 @@ import os
 
 import cv2
 import numpy as np
+from sklearn.model_selection import GroupShuffleSplit
 
 MAX_NUM_OF_VIDEOS_FOR_IDENTITY = 40
 MAX_NUM_OF_VIDEOS_FOR_CAMERA = 4
@@ -11,12 +12,10 @@ MIN_NUM_OF_VIDEOS = 4
 class DataReader:
 
     @staticmethod
-    def prepare_data(data_path, sequence_len, test_data_percentage=0.2):
+    def prepare_data(data_path, sequence_len, test_size=0.2):
         print("[INFO] loading images...")
-        data_train = []
-        data_test = []
-        labels_train = []
-        labels_test = []
+        data = []
+        labels = []
         groups_train = []
         label_to_identity = {}
         num_of_identities = -1
@@ -62,35 +61,32 @@ class DataReader:
             num_of_identities = num_of_identities + 1
             label_to_identity[num_of_identities] = identity
 
-            for i, value in identity_data.items():
-                groups_train.extend([number_of_identical_shots for _ in range(len(value))])
-                number_of_identical_shots = number_of_identical_shots + 1
-                data_train.extend(value)
-                labels_train.extend(np.full((len(value)), num_of_identities))
+            if num_of_videos_for_identity >= MIN_NUM_OF_VIDEOS:
 
-            print("[INFO] loaded identity " + identity)
+                for i, value in identity_data.items():
+                    groups_train.extend([number_of_identical_shots for _ in range(len(value))])
+                    number_of_identical_shots = number_of_identical_shots + 1
+                    data.extend(value)
+                    labels.extend(np.full((len(value)), num_of_identities))
 
-            # test_data_partition = math.ceil(num_of_videos_for_identity * test_data_percentage)
-            # added_test_data = 0
-            # for i, value in identity_data.items():
-            #     if added_test_data < test_data_partition:
-            #         data_test.extend(value)
-            #         labels_test.extend(np.full((len(value)), num_of_identities))
-            #         added_test_data = added_test_data + len(value)
-            #     else:
-            #         groups_train.extend([number_of_identical_shots for _ in range(len(value))])
-            #         number_of_identical_shots = number_of_identical_shots + 1
-            #         data_train.extend(value)
-            #         labels_train.extend(np.full((len(value)), num_of_identities))
-            # print("[INFO] loaded identity " + identity)
+                print("[INFO] loaded identity " + identity)
 
-        data_train = np.array(data_train, dtype="float") / 255.0
-        # data_test = np.array(data_test, dtype="float") / 255.0
-        labels_train = np.array(labels_train)
-        # labels_test = np.array(labels_test)
-        data_test = np.array([])
-        labels_test = np.array([])
+            else:
+                print("[INFO] skipped identity " + identity)
 
+        data = np.array(data, dtype="float") / 255.0
+        labels = np.array(labels)
+
+        cv = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups_train))
+
+        train_indices = cv[0][0]
+        test_indices = cv[0][1]
+
+        data_train = data[train_indices]
+        data_test = data[test_indices]
+
+        labels_train = labels[train_indices]
+        labels_test = labels[test_indices]
         return data_train, labels_train, data_test, labels_test, num_of_identities + 1, label_to_identity, groups_train
 
     @staticmethod

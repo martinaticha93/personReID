@@ -1,5 +1,5 @@
-import time
 import pickle
+import time
 
 import tensorflow as tf
 from keras.callbacks import Callback
@@ -46,9 +46,6 @@ def train():
     pickle.dump(trainY, open("trainY.p", "wb"))
     pickle.dump(testY, open("testY.p", "wb"))
     pickle.dump(groups_train, open("groups_train_1.p", "wb"))
-
-    # trainY = pickle.load(open("trainY_1.p", "rb"))
-    # groups_train = pickle.load(open("groups_train_1.p", "rb"))
 
     tuned_params = {
         "EPOCHS": [100],
