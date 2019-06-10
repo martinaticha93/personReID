@@ -87,6 +87,7 @@ class DataReader:
 
         labels_train = labels[train_indices]
         labels_test = labels[test_indices]
+        groups_train = np.array(groups_train)[train_indices]
         return data_train, labels_train, data_test, labels_test, num_of_identities + 1, label_to_identity, groups_train
 
     @staticmethod
