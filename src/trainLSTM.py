@@ -49,8 +49,8 @@ def train():
 
     tuned_params = {
         "EPOCHS": [100],
-        "INIT_LR": [0.01, 0.004, 0.001, 0.0004],
-        "DECAY_FACTOR": [0.8, 1, 1.2]
+        "INIT_LR": [0.001, 0.0004],
+        "DECAY_FACTOR": [0.8]
     }
 
     model = LSTMModel(
