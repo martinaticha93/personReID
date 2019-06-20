@@ -31,17 +31,24 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         print("[INFO] train data size: " + str(self.training_samples))
         print("[INFO] test data size: " + str(self.test_samples))
         print("[INFO] steps per epoch: " + str(self.training_samples / BS))
+        print()
 
         self.tensorboard = TensorBoard(log_dir="logs/{}".format(INIT_LR))
 
-        print("[INFO] training network...")
+        print("[INFO] compiling network...")
+        print()
         opt = SGD(lr=INIT_LR, decay=INIT_LR / (DECAY_FACTOR * num_of_classes))
         self.model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["categorical_accuracy"])
 
     def fit(self, trainX, trainY, fit_params):
         print("[INFO] fitting..")
+        print(trainY)
         testX = fit_params['testX']
         testY = fit_params['testY']
+
+        print("[INFO] train data size: " + str(len(trainY)))
+        print("[INFO] test data size: " + str(len(testY)))
+
         self.label_to_folder = fit_params['label_to_folder']
         self.model.fit_generator(
             generator=train_generator(trainX, trainY, BS, self.num_of_classes, self.label_to_folder),
@@ -52,7 +59,7 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
                 BS,
                 self.num_of_classes,
                 self.label_to_folder),
-            validation_steps=self.training_samples / (100*BS),
+            validation_steps=self.training_samples / BS,
             epochs=self.EPOCHS,
             verbose=1,
             callbacks=[self.tensorboard]

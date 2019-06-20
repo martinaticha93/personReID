@@ -59,14 +59,17 @@ def train():
         test_samples=len(testX)
     )
 
-    cv = list(GroupShuffleSplit().split(trainX, trainY, groups_train))
+    # split that is used for cross validation in grid search - for each split there's a run of the alg
+    # seems to be useless because this way it splits twice
+    cv = list(GroupShuffleSplit(n_splits=3).split(trainX, trainY, groups_train))
     gs = GridSearchCV(model, tuned_params, cv=cv)
     fit_params = {
         'label_to_folder': label_to_folder,
         'testX': testX,
         'testY': testY
     }
-    gs.fit(trainX, trainY, groups=trainY, fit_params=fit_params)
+
+    gs.fit(trainX, trainY, fit_params=fit_params)
 
     print(sorted(gs.cv_results_.keys()))
     print(gs.best_params_)

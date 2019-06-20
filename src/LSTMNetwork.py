@@ -34,6 +34,14 @@ class LSTMNetwork:
             padding='same',
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
+            return_sequences=True))
+        model.add(BatchNormalization())
+        model.add(ConvLSTM2D(
+            filters=100,
+            kernel_size=(3, 3),
+            padding='same',
+            kernel_initializer='random_uniform',
+            bias_initializer='zeros',
             return_sequences=False))
         model.add(BatchNormalization())
         model.add(AveragePooling2D((3, 3), strides=2))
