@@ -52,7 +52,7 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
                 BS,
                 self.num_of_classes,
                 self.label_to_folder),
-            validation_steps=self.training_samples / BS,
+            validation_steps=self.training_samples / (100*BS),
             epochs=self.EPOCHS,
             verbose=1,
             callbacks=[self.tensorboard]
