@@ -5,7 +5,7 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from LSTMNetwork import LSTMNetwork
 from generators import train_generator, predict_generator
 
-BS = 30
+BS = 20
 
 
 class LSTMModel(BaseEstimator, ClassifierMixin):

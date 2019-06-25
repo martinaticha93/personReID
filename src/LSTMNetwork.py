@@ -1,5 +1,6 @@
 from keras.layers import ConvLSTM2D, Dense, BatchNormalization, AveragePooling2D, Flatten
 from keras.models import Sequential
+from keras.utils import plot_model
 
 
 class LSTMNetwork:
@@ -32,6 +33,7 @@ class LSTMNetwork:
             filters=80,
             kernel_size=(3, 3),
             padding='same',
+            strides=2,
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
             return_sequences=True))
@@ -55,5 +57,5 @@ class LSTMNetwork:
             units=num_of_classes,
             activation='softmax'))
 
-        # plot_model(model, to_file='model.png', show_shapes=True)
+        plot_model(model, to_file='model.png', show_shapes=True)
         return model
