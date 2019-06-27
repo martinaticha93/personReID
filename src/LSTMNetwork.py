@@ -24,23 +24,23 @@ class LSTMNetwork:
             filters=60,
             kernel_size=(3, 3),
             padding='same',
-            strides=2,
+            strides=1,
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
             return_sequences=True))
         model.add(BatchNormalization())
         model.add(ConvLSTM2D(
             filters=80,
-            kernel_size=(3, 3),
+            kernel_size=(2, 2),
             padding='same',
-            strides=2,
+            strides=1,
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
             return_sequences=True))
         model.add(BatchNormalization())
         model.add(ConvLSTM2D(
             filters=100,
-            kernel_size=(3, 3),
+            kernel_size=(2, 2),
             padding='same',
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
