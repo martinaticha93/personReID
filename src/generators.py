@@ -18,13 +18,11 @@ from keras.utils import to_categorical
 #                 The generator is expected to loop over its data
 #                 indefinitely. An epoch finishes when `steps_per_epoch`
 #                 batches have been seen by the model.
-def train_generator(data, labels, sequence_len, batch_size, num_of_classes, dict):
+def train_generator(data, labels, batch_size, num_of_classes, dict):
     while True:
         idxs = np.random.choice(data.shape[0], size=batch_size, replace=False)
         x_train = data[idxs, :]
         y_train = labels[idxs]
-        # x_train = data
-        # y_train = labels
         y_train = np.array([np.tile(y_train, (1, 1))]).transpose()
         y_train = to_categorical(y=y_train, num_classes=num_of_classes)
         yield x_train, y_train.reshape(y_train.shape[0], y_train.shape[2])
