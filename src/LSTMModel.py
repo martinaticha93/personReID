@@ -20,6 +20,8 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         self.DECAY_FACTOR = DECAY_FACTOR
         self.SEQUENCE_LEN = sequence_len
 
+        print("[INFO] initial learning rate: " + str(self.INIT_LR))
+        print("[INFO] decay factor: " + str(self.DECAY_FACTOR))
         self.model = LSTMNetwork.build(
             width=64,
             height=64,
