@@ -38,18 +38,10 @@ class LSTMNetwork:
             bias_initializer='zeros',
             return_sequences=True))
         model.add(BatchNormalization())
-        model.add(ConvLSTM2D(
-            filters=100,
-            kernel_size=(2, 2),
-            padding='same',
-            kernel_initializer='random_uniform',
-            bias_initializer='zeros',
-            return_sequences=False))
-        model.add(BatchNormalization())
         model.add(AveragePooling2D((3, 3), strides=2))
         model.add(Flatten())
         model.add(Dense(
-            units=5 * num_of_classes,
+            units=4 * num_of_classes,
             activation='relu',
             kernel_initializer='random_uniform',
             bias_initializer='zeros'))
