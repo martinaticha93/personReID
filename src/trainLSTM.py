@@ -12,7 +12,7 @@ from generators import train_generator, predict_generator
 BBOX_TRAIN = "../data/bbox_train_"
 SIMPLE = "../data/simple_data_set"
 MARS_SERVER = "../data/mars_edges"
-MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/deep-person-reid/data/mars/test'
+MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/edges_hed'
 
 DATA_PATH_TRAIN = MARS_SERVER
 SEQUENCE_LEN = 9
