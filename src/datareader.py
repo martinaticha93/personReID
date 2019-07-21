@@ -1,5 +1,6 @@
 import os
 from typing import List
+import json
 
 import cv2
 import numpy as np
@@ -90,16 +91,16 @@ def _load_one_identity(data_path, identity, sequence_len):
     num_of_videos_for_identity = 0
     current_camera = ''
 
-    for camera, file in enumerate(directory):
-        if camera == 0:
+    for i, file in enumerate(directory):
+        if i == 0:
             video = []
             num_of_imgs_in_video = 0
             current_camera = file[6:11]
             identity_data[current_camera] = []
 
-        if (camera > 0):
+        if (i > 0):
             file_name = int(file[12:15])
-            previous_file_name = int(directory[camera - 1][12:15])
+            previous_file_name = int(directory[i - 1][12:15])
             if (file_name - 1 != previous_file_name):
                 video = []
                 num_of_imgs_in_video = 0
@@ -112,14 +113,14 @@ def _load_one_identity(data_path, identity, sequence_len):
 
             if num_of_imgs_in_video == sequence_len:
                 score = _get_video_score(video=video)
-                video = [image['image'] for image in video]  # drop score
+                video = [image for image in video]  # drop score
                 identity_data[current_camera].append({'score': score, 'video': video})
                 video = []
                 num_of_imgs_in_video = 0
                 num_of_videos_for_identity = num_of_videos_for_identity + 1
 
-            image_score = _get_img_score('0001C1T0005F093_0.7985124390338071.jpg')
-            video.append({'image': image, 'score': image_score})
+            image_score = _get_img_score(file)
+            video.append({'image': image, 'score': image_score, 'file_name': file})
             num_of_imgs_in_video = num_of_imgs_in_video + 1
 
         except:
@@ -166,6 +167,19 @@ class DataReader:
             else:
                 print("[INFO] skipped identity " + identity)
 
+        def _videos_to_img_key(video: list, key: str):
+            return [img[key] for img in video]
+
+        data_names = [_videos_to_img_key(video, key='file_name') for video in data]
+        data_names_file = json.dumps(data_names)
+        f = open("data_names.json", "w")
+        f.write(data_names_file)
+        f.close()
+        # with open('data_names.json') as json_file:
+        #     data_names_file = json.load(json_file)
+
+
+        data = [_videos_to_img_key(video, key='image') for video in data]
         data = np.array(data, dtype="float") / 255.0
         labels = np.array(labels)
 
