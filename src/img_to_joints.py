@@ -66,17 +66,19 @@ def transform_img(img_name: str, identity: str, output_dir: str, input_dir: str,
 if __name__ == '__main__':
     output_dir = '/media/martina/Data/School/CTU/thesis/mars_joints'
     input_dir = '/media/martina/Data/School/CTU/thesis/mars'
-    edges_dir = '/media/martina/Data/School/CTU/thesis/mars_edges'
+    edges_dir = '/media/martina/Data/School/CTU/thesis/mars_edges_postpro'
 
-    shutil.rmtree(os.path.join(output_dir, 'joints_edges'))
-    shutil.rmtree(os.path.join(output_dir, 'joints'))
-    shutil.rmtree(os.path.join(output_dir, 'key_points'))
-
-    os.mkdir(os.path.join(output_dir, 'joints_edges'))
-    os.mkdir(os.path.join(output_dir, 'joints'))
-    os.mkdir(os.path.join(output_dir, 'key_points'))
+    # shutil.rmtree(os.path.join(output_dir, 'joints_edges'))
+    # shutil.rmtree(os.path.join(output_dir, 'joints'))
+    # shutil.rmtree(os.path.join(output_dir, 'key_points'))
+    #
+    # os.mkdir(os.path.join(output_dir, 'joints_edges'))
+    # os.mkdir(os.path.join(output_dir, 'joints'))
+    # os.mkdir(os.path.join(output_dir, 'key_points'))
 
     all_identities = os.listdir(input_dir)
+    processed_identities = os.listdir(os.path.join(output_dir, 'joints_edges'))
+    [all_identities.remove(identity) for identity in processed_identities]
     all_identities.sort()
 
     for identity in all_identities:
