@@ -14,7 +14,7 @@ SIMPLE = "../data/simple_data_set"
 MARS_SERVER = "../data/mars_edges"
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/edges_hed'
 
-DATA_PATH_TRAIN = MARS_SERVER
+DATA_PATH_TRAIN = SIMPLE
 SEQUENCE_LEN = 9
 MODEL = "model"
 LABELS = "labels"
