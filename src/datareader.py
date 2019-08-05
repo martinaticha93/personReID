@@ -1,6 +1,6 @@
+import json
 import os
 from typing import List
-import json
 
 import cv2
 import numpy as np
@@ -144,6 +144,9 @@ class DataReader:
     def prepare_data(data_path, sequence_len, test_size=0.2):
         print("[INFO] loading images...")
 
+        def _videos_to_img_key(video: list, key: str):
+            return [img[key] for img in video]
+
         data = []
         labels = []
         groups = []
@@ -160,15 +163,15 @@ class DataReader:
                 num_of_identities = num_of_identities + 1
                 label_to_identity[num_of_identities] = identity
                 identity_data = _select_identity_data(identity_data)
-                data, labels, groups, unique_cameras = _add_identity(data, labels, groups, identity_data,
+                data, labels, groups, unique_cameras = _add_identity(data,
+                                                                     labels,
+                                                                     groups,
+                                                                     identity_data,
                                                                      unique_cameras,
                                                                      num_of_identities)
                 print("[INFO] loaded identity " + identity)
             else:
                 print("[INFO] skipped identity " + identity)
-
-        def _videos_to_img_key(video: list, key: str):
-            return [img[key] for img in video]
 
         data_names = [_videos_to_img_key(video, key='file_name') for video in data]
         data_names_file = json.dumps(data_names)
@@ -177,7 +180,6 @@ class DataReader:
         f.close()
         # with open('data_names.json') as json_file:
         #     data_names_file = json.load(json_file)
-
 
         data = [_videos_to_img_key(video, key='image') for video in data]
         data = np.array(data, dtype="float") / 255.0
