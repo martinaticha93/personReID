@@ -1,4 +1,3 @@
-import json
 import os
 from typing import List
 
@@ -39,12 +38,15 @@ def _select_identity_data(identity_data: dict):
     for camera, videos in identity_data.items():
         identity_data[camera] = _get_best_sequences(videos)
 
-    if _get_num_of_videos_in_dict(identity_data) <= MAX_NUM_OF_VIDEOS_FOR_IDENTITY:
-        return identity_data
-
     num_of_selected_videos = 0
     level = 0
     selected_videos = _get_dict_with_identical_keys(identity_data)
+
+    if _get_num_of_videos_in_dict(identity_data) <= MAX_NUM_OF_VIDEOS_FOR_IDENTITY:
+        for camera, videos in identity_data.items():
+            for video in videos:
+                selected_videos[camera].append(video['video'])
+        return selected_videos
 
     while True:
         for camera, videos in identity_data.items():
@@ -155,7 +157,6 @@ class DataReader:
         unique_cameras = 0
         identities = os.listdir(data_path)
         identities.sort()
-
         for identity in identities:
             num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity, sequence_len)
 
@@ -169,15 +170,19 @@ class DataReader:
                                                                      identity_data,
                                                                      unique_cameras,
                                                                      num_of_identities)
+
                 print("[INFO] loaded identity " + identity)
             else:
                 print("[INFO] skipped identity " + identity)
 
         data_names = [_videos_to_img_key(video, key='file_name') for video in data]
-        data_names_file = json.dumps(data_names)
-        f = open("data_names.json", "w")
-        f.write(data_names_file)
-        f.close()
+        data_names = [item for sublist in data_names for item in sublist]
+        np.save(os.path.join('/media/martina/Data/School/CTU/thesis/mars_joints/data_names'), data_names)
+
+        # data_names_file = json.dumps(data_names)
+        # f = open("data_names.json", "w")
+        # f.write(data_names_file)
+        # f.close()
         # with open('data_names.json') as json_file:
         #     data_names_file = json.load(json_file)
 
