@@ -51,26 +51,29 @@ def train():
         "DECAY_FACTOR": [0.8]
     }
 
-    model = LSTMModel(
-        num_of_classes=num_of_classes,
-        training_samples=len(trainX),
-        test_samples=len(testX)
-    )
+    model = LSTMModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
+    model.fit()
+
+    # model = LSTMModel(
+    #     num_of_classes=num_of_classes,
+    #     training_samples=len(trainX),
+    #     test_samples=len(testX)
+    # )
 
     # split that is used for cross validation in grid search - for each split there's a run of the alg
     # seems to be useless because this way it splits twice
-    cv = list(GroupShuffleSplit(n_splits=3).split(trainX, trainY, groups_train))
-    gs = GridSearchCV(model, tuned_params, cv=cv)
-    fit_params = {
-        'label_to_folder': label_to_folder,
-        'testX': testX,
-        'testY': testY
-    }
+    # cv = list(GroupShuffleSplit(n_splits=3).split(trainX, trainY, groups_train))
+    # gs = GridSearchCV(model, tuned_params, cv=cv)
+    # fit_params = {
+    #     'label_to_folder': label_to_folder,
+    #     'testX': testX,
+    #     'testY': testY
+    # }
+    #
+    # gs.fit(trainX, trainY, fit_params=fit_params)
 
-    gs.fit(trainX, trainY, fit_params=fit_params)
-
-    print(sorted(gs.cv_results_.keys()))
-    print(gs.best_params_)
+    # print(sorted(gs.cv_results_.keys()))
+    # print(gs.best_params_)
     return None, None
 
 

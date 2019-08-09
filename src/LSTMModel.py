@@ -3,65 +3,47 @@ from keras.optimizers import SGD
 from sklearn.base import BaseEstimator, ClassifierMixin
 
 from LSTMNetwork import LSTMNetwork
+from datareader import SEQUENCE_LEN
 from generators import train_generator, predict_generator
 
 BS = 20
 
-
 class LSTMModel(BaseEstimator, ClassifierMixin):
-    def __init__(
-            self, num_of_classes, training_samples, test_samples, sequence_len=9, EPOCHS=20, INIT_LR=0.01,
-            DECAY_FACTOR=1):
+    def __init__(self, trainX, trainY, testX, testY, num_of_classes, label_to_folder):
+        self.trainX = trainX
+        self.trainY = trainY
+        self.testX = testX
+        self.testY = testY
         self.num_of_classes = num_of_classes
-        self.EPOCHS = EPOCHS
-        self.INIT_LR = INIT_LR
-        self.training_samples = training_samples
-        self.test_samples = test_samples
-        self.DECAY_FACTOR = DECAY_FACTOR
-        self.SEQUENCE_LEN = sequence_len
+        self.label_to_folder = label_to_folder
 
-        print("[INFO] initial learning rate: " + str(self.INIT_LR))
-        print("[INFO] decay factor: " + str(self.DECAY_FACTOR))
-        self.model = LSTMNetwork.build(
-            width=64,
-            height=64,
-            depth=3,
-            sequence_len=self.SEQUENCE_LEN,
-            num_of_classes=num_of_classes
-        )
+        self.model = LSTMNetwork.build(width=64, height=64, depth=3, sequence_len=SEQUENCE_LEN,
+                                       num_of_classes=num_of_classes)
+        self.TRAINING_SAMPLES = len(trainX)
+        self.TEST_SAMPLES = len(testX)
 
-        print("[INFO] train data size: " + str(self.training_samples))
-        print("[INFO] test data size: " + str(self.test_samples))
-        print("[INFO] steps per epoch: " + str(self.training_samples / BS))
-        print()
+        self.INIT_LR = 0.004
+        self.EPOCHS = 500
+        self.BS = 30
 
-        self.tensorboard = TensorBoard(log_dir="logs/{}".format(INIT_LR))
+        print("[INFO] train data size: " + str(self.TRAINING_SAMPLES))
+        print("[INFO] test data size: " + str(self.TEST_SAMPLES))
+        print("[INFO] steps per epoch: " + str(self.TRAINING_SAMPLES / self.BS))
 
-        print("[INFO] compiling network...")
-        print()
-        opt = SGD(lr=INIT_LR, decay=INIT_LR / (DECAY_FACTOR * num_of_classes))
+        self.tensorboard = TensorBoard(log_dir="logs/{}".format(self.INIT_LR))
+
+        print("[INFO] training network...")
+        opt = SGD(lr=self.INIT_LR, decay=self.INIT_LR / num_of_classes)
         self.model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["categorical_accuracy"])
 
-    def fit(self, trainX, trainY, fit_params):
-        print("[INFO] fitting..")
-        print(trainY)
-        testX = fit_params['testX']
-        testY = fit_params['testY']
-
-        print("[INFO] train data size: " + str(len(trainY)))
-        print("[INFO] test data size: " + str(len(testY)))
-
-        self.label_to_folder = fit_params['label_to_folder']
+    def fit(self):
         self.model.fit_generator(
-            generator=train_generator(trainX, trainY, BS, self.num_of_classes, self.label_to_folder),
-            steps_per_epoch=self.training_samples / BS,
-            validation_data=train_generator(
-                testX,
-                testY,
-                BS,
-                self.num_of_classes,
-                self.label_to_folder),
-            validation_steps=self.training_samples / BS,
+            generator=train_generator(self.trainX, self.trainY, self.BS, self.num_of_classes,
+                                      self.label_to_folder),
+            steps_per_epoch=self.TRAINING_SAMPLES / self.BS,
+            validation_data=train_generator(self.testX, self.testY, self.BS, self.num_of_classes,
+                                            self.label_to_folder),
+            validation_steps=self.TRAINING_SAMPLES / self.BS,
             epochs=self.EPOCHS,
             verbose=1,
             callbacks=[self.tensorboard]
