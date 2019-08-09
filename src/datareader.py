@@ -97,8 +97,8 @@ def _load_one_identity(data_path, identity):
     for i, file in enumerate(directory):
         if i == 0:
             video = []
-            num_of_imgs_in_video = 0
             current_camera = file[6:11]
+            num_of_imgs_in_video = 0
             identity_data[current_camera] = []
 
         if (i > 0):
@@ -121,6 +121,8 @@ def _load_one_identity(data_path, identity):
                 score = _get_video_score(video=video)
                 video = [image for image in video]  # drop score
                 identity_data[current_camera].append({'score': score, 'video': video})
+                current_camera = file[6:11]
+                identity_data[current_camera] = []
                 video = []
                 num_of_imgs_in_video = 0
                 num_of_videos_for_identity = num_of_videos_for_identity + 1
