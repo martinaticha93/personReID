@@ -3,9 +3,9 @@ import os
 import cv2
 import numpy as np
 
-DIRECTORY = '/media/martina/Data/School/CTU/thesi/data'
-INPUT_FOLDER = 'mars_edges'
-OUTPUT_FOLDER = 'mars_edges_selected_20'
+DIRECTORY = '/media/martina/Data/School/CTU/thesis/data'
+INPUT_FOLDER = 'mars_edges_postpro'
+OUTPUT_FOLDER = 'mars_edges_postpro_selected_20'
 
 
 def create_folder_from_file_names(file_names: list):
@@ -22,5 +22,5 @@ def create_folder_from_file_names(file_names: list):
 
 
 if __name__ == '__main__':
-    data_names = np.load('/media/martina/Data/School/CTU/thesis/mars_joints/data_names.npy')
+    data_names = np.load('/media/martina/Data/School/CTU/thesis/data/mars_joints/data_names.npy')
     create_folder_from_file_names(data_names)

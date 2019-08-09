@@ -1,6 +1,5 @@
 from keras.layers import ConvLSTM2D, Dense, BatchNormalization, AveragePooling2D, Flatten
 from keras.models import Sequential
-from keras.utils import plot_model
 
 
 class LSTMNetwork:
