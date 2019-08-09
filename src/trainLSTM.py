@@ -51,7 +51,7 @@ def train():
         "DECAY_FACTOR": [0.8]
     }
 
-    model = LSTMModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
+    model = LSTMModel(trainX, trainY, trainX, trainY, num_of_classes, label_to_folder)
     model.fit()
 
     # model = LSTMModel(
