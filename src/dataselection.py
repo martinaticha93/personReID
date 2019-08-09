@@ -3,9 +3,9 @@ import os
 import cv2
 import numpy as np
 
-DIRECTORY = '/media/martina/Data/School/CTU/thesis'
+DIRECTORY = '/media/martina/Data/School/CTU/thesi/data'
 INPUT_FOLDER = 'mars_edges'
-OUTPUT_FOLDER = 'mars_edges_selected'
+OUTPUT_FOLDER = 'mars_edges_selected_20'
 
 
 def create_folder_from_file_names(file_names: list):

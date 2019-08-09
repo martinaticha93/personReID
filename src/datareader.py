@@ -8,6 +8,7 @@ from sklearn.model_selection import GroupShuffleSplit
 MAX_NUM_OF_VIDEOS_FOR_IDENTITY = 10
 MAX_NUM_OF_VIDEOS_FOR_CAMERA = 4
 MIN_NUM_OF_VIDEOS = 4
+SEQUENCE_LEN = 20
 
 
 # sorts by score and limits num of videos for camera
@@ -84,7 +85,7 @@ def _get_img_score(image_name):
     return 0
 
 
-def _load_one_identity(data_path, identity, sequence_len):
+def _load_one_identity(data_path, identity):
     identity_data = {}
     video = []
     directory = os.listdir(os.path.join(data_path, identity))
@@ -103,17 +104,20 @@ def _load_one_identity(data_path, identity, sequence_len):
         if (i > 0):
             file_name = int(file[12:15])
             previous_file_name = int(directory[i - 1][12:15])
-            if (file_name - 1 != previous_file_name):
-                video = []
-                num_of_imgs_in_video = 0
-                if (current_camera != file[6:11]):
-                    current_camera = file[6:11]
-                    identity_data[current_camera] = []
+
+            # this code should be comment out in case of usage of all data
+            # if (file_name - 1 != previous_file_name):
+            #     video = []
+            #     num_of_imgs_in_video = 0
+            #     if (current_camera != file[6:11]):
+            #         current_camera = file[6:11]
+            #         identity_data[current_camera] = []
+
         try:
             image = cv2.imread(os.path.join(data_path, identity, file))
             image = cv2.resize(image, (64, 64))
 
-            if num_of_imgs_in_video == sequence_len:
+            if num_of_imgs_in_video == SEQUENCE_LEN:
                 score = _get_video_score(video=video)
                 video = [image for image in video]  # drop score
                 identity_data[current_camera].append({'score': score, 'video': video})
@@ -143,7 +147,7 @@ class DataReader:
     # and "groups_train" which is a list denoting the group of a video. Each group contains videos for unique
     # combination (identity, camera). This list is then used to split data into training a validation test so that
     # videos of the same (identity, camera) combination are not present in both data sets
-    def prepare_data(data_path, sequence_len, test_size=0.2):
+    def prepare_data(data_path, test_size=0.2):
         print("[INFO] loading images...")
 
         def _videos_to_img_key(video: list, key: str):
@@ -158,7 +162,7 @@ class DataReader:
         identities = os.listdir(data_path)
         identities.sort()
         for identity in identities:
-            num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity, sequence_len)
+            num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity)
 
             if num_of_videos_for_identity >= MIN_NUM_OF_VIDEOS:
                 num_of_identities = num_of_identities + 1
@@ -175,16 +179,9 @@ class DataReader:
             else:
                 print("[INFO] skipped identity " + identity)
 
-        data_names = [_videos_to_img_key(video, key='file_name') for video in data]
-        data_names = [item for sublist in data_names for item in sublist]
-        np.save(os.path.join('/media/martina/Data/School/CTU/thesis/mars_joints/data_names'), data_names)
-
-        # data_names_file = json.dumps(data_names)
-        # f = open("data_names.json", "w")
-        # f.write(data_names_file)
-        # f.close()
-        # with open('data_names.json') as json_file:
-        #     data_names_file = json.load(json_file)
+        # data_names = [_videos_to_img_key(video, key='file_name') for video in data]
+        # data_names = [item for sublist in data_names for item in sublist]
+        # np.save(os.path.join('/media/martina/Data/School/CTU/thesis/mars_joints/data_names'), data_names)
 
         data = [_videos_to_img_key(video, key='image') for video in data]
         data = np.array(data, dtype="float") / 255.0

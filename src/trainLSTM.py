@@ -11,11 +11,10 @@ from generators import train_generator, predict_generator
 
 BBOX_TRAIN = "../data/bbox_train_"
 SIMPLE = "../data/simple_data_set"
-MARS_SERVER = "../data/mars_edges"
-MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/mars_joints/joints_edges'
+MARS_SERVER = "../data/mars_edges_selected_20"
+MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20'
 
-DATA_PATH_TRAIN = MARS_LOCAL
-SEQUENCE_LEN = 9
+DATA_PATH_TRAIN = MARS_SERVER
 MODEL = "model"
 LABELS = "labels"
 GPU = "7"
@@ -39,9 +38,8 @@ class TestCallback(Callback):
 def train():
     print("[INFO] obtaining data...")
     trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
-        DATA_PATH_TRAIN,
-        SEQUENCE_LEN
-    )
+        DATA_PATH_TRAIN
+        )
 
     pickle.dump(trainY, open("trainY.p", "wb"))
     pickle.dump(testY, open("testY.p", "wb"))
