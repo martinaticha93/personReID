@@ -17,7 +17,9 @@ class LSTMNetwork:
             padding='same',
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
-            return_sequences=True))
+            return_sequences=True,
+            dropout=0.2
+        ))
         model.add(BatchNormalization())
         model.add(ConvLSTM2D(
             filters=60,
@@ -26,7 +28,8 @@ class LSTMNetwork:
             strides=1,
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
-            return_sequences=True))
+            return_sequences=True,
+            dropout=0.2))
         model.add(BatchNormalization())
         model.add(ConvLSTM2D(
             filters=80,
@@ -35,7 +38,8 @@ class LSTMNetwork:
             strides=1,
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
-            return_sequences=False))
+            return_sequences=False,
+            dropout=0.2))
         model.add(BatchNormalization())
         model.add(AveragePooling2D((3, 3), strides=2))
         model.add(Flatten())
