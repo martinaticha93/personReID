@@ -22,7 +22,7 @@ class LSTMModel(BaseEstimator, ClassifierMixin):
         self.TRAINING_SAMPLES = len(trainX)
         self.TEST_SAMPLES = len(testX)
 
-        self.INIT_LR = 0.004
+        self.INIT_LR = 0.0004
         self.EPOCHS = 500
         self.BS = 30
 
