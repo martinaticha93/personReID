@@ -1,5 +1,21 @@
+## Training
+To train the network, one needs to to specify the path in the DATA_PATH_TRAIN variable in trainLSTM. The data needs to be 
+stored in separated folders where each folder represents one identity. The folders name must correspond to the 
+identity id. For each identity, there must be the sequences of 20 images in the folder and each folder must contain 
+4 - 10 sequences.
+
+The training starts by running the command python3.6 trainLSTM.py in /src.
+Once the training is finished, the resulting model together with the identity labels map is stored in the same 
+directory.
+
+## Prediction
+To predict a label of a sequence, run the python file predict.py in the /src directory.
+The 'DATA_PATH' needs to be specified.
+
 # personReID
  ## Taylor modules loading
+ For training of the neural network, we use the Taylor server which is available to all students at CTU. 
+ To load all necessary libraries at the server, run the following commands:
  
 module load Keras/2.2.2-goolfc-2017b-Python-3.6.4
 
@@ -29,15 +45,3 @@ export CUDA_VISIBLE_DEVICES=7
 
 
 
-## Training
-To train the network, one needs to have the training data in /data/simple_data_set_train folder. The data needs to be 
-stored in separated folders where each folder represents one identity. The folders name must correspond to the 
-identity id.
-
-The training starts by running the command python3.6 trainLSTM.py in /videoclassification.
-Once the training is finnished, the resulting model together with the identity labels map is stored in the same 
-directory.
-
-## Prediction
-To predict a label of a sequence, run the python file predict.py in the /videoclassification directory.
-The 'DATA_PATH' needs to be specified.

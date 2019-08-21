@@ -111,7 +111,6 @@ def _load_one_identity(data_path, identity):
             num_of_imgs_in_video = num_of_imgs_in_video + 1
 
             if num_of_imgs_in_video == SEQUENCE_LEN:
-                # if num_of_imgs_in_video == SEQUENCE_LEN: #this row if you work with not cleansened data
                 score = _get_video_score(video=video)
                 video = [image for image in video]  # drop score
                 identity_data[current_camera].append({'score': score, 'video': video})
