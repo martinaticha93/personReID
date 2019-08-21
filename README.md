@@ -25,6 +25,10 @@ module load scikit-learn/0.19.2-foss-2018b-Python-3.6.4
 
 nvidia-smi
 
+export CUDA_VISIBLE_DEVICES=7
+
+
+
 ## Training
 To train the network, one needs to have the training data in /data/simple_data_set_train folder. The data needs to be 
 stored in separated folders where each folder represents one identity. The folders name must correspond to the 
