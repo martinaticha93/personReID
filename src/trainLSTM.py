@@ -12,6 +12,7 @@ BBOX_TRAIN = "../data/bbox_train_"
 SIMPLE = "../data/simple_data_set"
 
 SERVER_MARS_EDGES_20 = "../data/mars_edges_selected_20"
+SERVER_MARS_EDGES_20 = "../data/mars_keypoints_selected_20"
 
 LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20'
 LOCAL_MARS_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_keypoints_selected_20'
@@ -20,7 +21,7 @@ LOCAL_MARS_EDGES_POSTPRO_20 = '/media/martina/Data/School/CTU/thesis/data/mars_e
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = LOCAL_MARS_EDGES_POSTPRO_20
+DATA_PATH_TRAIN = LOCAL_MARS_EDGES_20
 MODEL = "model"
 LABELS = "labels"
 GPU = "7"
@@ -46,10 +47,6 @@ def train():
     trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
         DATA_PATH_TRAIN
     )
-
-    pickle.dump(trainY, open("trainY.p", "wb"))
-    pickle.dump(testY, open("testY.p", "wb"))
-    pickle.dump(groups_train, open("groups_train_1.p", "wb"))
 
     tuned_params = {
         "EPOCHS": [100],
@@ -87,9 +84,9 @@ if __name__ == '__main__':
     start = int(round(time.time()))
     with tf.device('/gpu:' + GPU):
         model, label_to_folder = train()
-        # end = int(round(time.time()))
-        # print("[INFO] the training took..." + str(end - start) + "second")
-        # model.save(MODEL)
-        # f = open(LABELS, "wb")
-        # f.write(pickle.dumps(label_to_folder))
-        # f.close()
+        end = int(round(time.time()))
+        print("[INFO] the training took..." + str(end - start) + "second")
+        model.save(MODEL)
+        f = open(LABELS, "wb")
+        f.write(pickle.dumps(label_to_folder))
+        f.close()

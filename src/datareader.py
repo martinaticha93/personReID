@@ -96,39 +96,28 @@ def _load_one_identity(data_path, identity):
     current_camera = ''
 
     for i, file in enumerate(directory):
-        if i == 0:
+        if current_camera != file[6:11]:
             video = []
             current_camera = file[6:11]
             num_of_imgs_in_video = 0
             identity_data[current_camera] = []
 
-        if (i > 0):
-            file_name = int(file[12:15])
-            previous_file_name = int(directory[i - 1][12:15])
-
-            if (file_name - 1 != previous_file_name):
-                video = []
-                num_of_imgs_in_video = 0
-                if (current_camera != file[6:11]):
-                    current_camera = file[6:11]
-                    identity_data[current_camera] = []
-
         try:
             image = cv2.imread(os.path.join(data_path, identity, file))
             image = cv2.resize(image, (64, 64))
 
-            if num_of_imgs_in_video == SEQUENCE_LEN - 1:
-            # if num_of_imgs_in_video == SEQUENCE_LEN: #this row if you work with not cleansened data
+            image_score = _get_img_score(file)
+            video.append({'image': image, 'score': image_score, 'file_name': file})
+            num_of_imgs_in_video = num_of_imgs_in_video + 1
+
+            if num_of_imgs_in_video == SEQUENCE_LEN:
+                # if num_of_imgs_in_video == SEQUENCE_LEN: #this row if you work with not cleansened data
                 score = _get_video_score(video=video)
                 video = [image for image in video]  # drop score
                 identity_data[current_camera].append({'score': score, 'video': video})
                 video = []
                 num_of_imgs_in_video = 0
                 num_of_videos_for_identity = num_of_videos_for_identity + 1
-
-            image_score = _get_img_score(file)
-            video.append({'image': image, 'score': image_score, 'file_name': file})
-            num_of_imgs_in_video = num_of_imgs_in_video + 1
 
         except:
             print("image " + os.path.join(data_path, identity, file) + " could not have been loaded")
@@ -162,7 +151,7 @@ class DataReader:
         unique_cameras = 0
         identities = os.listdir(data_path)
         identities.sort()
-        for identity in identities:
+        for identity in identities[0:2]:
             num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity)
 
             if num_of_videos_for_identity >= MIN_NUM_OF_VIDEOS:
@@ -179,10 +168,6 @@ class DataReader:
                 print("[INFO] loaded identity " + identity)
             else:
                 print("[INFO] skipped identity " + identity)
-
-        data_names = [_videos_to_img_key(video, key='file_name') for video in data]
-        data_names = [item for sublist in data_names for item in sublist]
-        np.save(os.path.join('/media/martina/Data/School/CTU/thesis/data/mars_joints/data_names'), data_names)
 
         data = [_videos_to_img_key(video, key='image') for video in data]
         data = np.array(data, dtype="float") / 255.0
