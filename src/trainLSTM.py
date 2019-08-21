@@ -3,7 +3,6 @@ import time
 
 import tensorflow as tf
 from keras.callbacks import Callback
-from sklearn.model_selection import GridSearchCV, GroupShuffleSplit
 
 from LSTMModel import LSTMModel
 from datareader import DataReader
@@ -11,10 +10,17 @@ from generators import train_generator, predict_generator
 
 BBOX_TRAIN = "../data/bbox_train_"
 SIMPLE = "../data/simple_data_set"
-MARS_SERVER = "../data/mars_edges_selected_20"
-MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20'
 
-DATA_PATH_TRAIN = MARS_SERVER
+SERVER_MARS_EDGES_20 = "../data/mars_edges_selected_20"
+
+LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20'
+LOCAL_MARS_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_keypoints_selected_20'
+LOCAL_MARS_EDGES_POSTPRO_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_postpro_selected_20'
+
+MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
+MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
+
+DATA_PATH_TRAIN = LOCAL_MARS_EDGES_POSTPRO_20
 MODEL = "model"
 LABELS = "labels"
 GPU = "7"
@@ -39,7 +45,7 @@ def train():
     print("[INFO] obtaining data...")
     trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
         DATA_PATH_TRAIN
-        )
+    )
 
     pickle.dump(trainY, open("trainY.p", "wb"))
     pickle.dump(testY, open("testY.p", "wb"))
