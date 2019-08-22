@@ -85,8 +85,14 @@ def _get_img_score(image_name):
         return float(name_split[1][:-4])
     return 0
 
+def load_edges(data_path):
+    image = cv2.imread(data_path)
+    return cv2.resize(image, (64, 64))
 
-def _load_one_identity(data_path, identity):
+def load_key_pts(data_path):
+    return
+
+def _load_one_identity(data_path, identity, load_img):
     identity_data = {}
     video = []
     directory = os.listdir(os.path.join(data_path, identity))
@@ -103,15 +109,13 @@ def _load_one_identity(data_path, identity):
             identity_data[current_camera] = []
 
         try:
-            image = cv2.imread(os.path.join(data_path, identity, file))
-            image = cv2.resize(image, (64, 64))
+            image = load_img(os.path.join(data_path, identity, file))
 
             image_score = _get_img_score(file)
             video.append({'image': image, 'score': image_score, 'file_name': file})
             num_of_imgs_in_video = num_of_imgs_in_video + 1
 
             if num_of_imgs_in_video == SEQUENCE_LEN:
-                # if num_of_imgs_in_video == SEQUENCE_LEN: #this row if you work with not cleansened data
                 score = _get_video_score(video=video)
                 video = [image for image in video]  # drop score
                 identity_data[current_camera].append({'score': score, 'video': video})
@@ -137,7 +141,7 @@ class DataReader:
     # and "groups_train" which is a list denoting the group of a video. Each group contains videos for unique
     # combination (identity, camera). This list is then used to split data into training a validation test so that
     # videos of the same (identity, camera) combination are not present in both data sets
-    def prepare_data(data_path, test_size=0.2):
+    def prepare_data(data_path, load_img, test_size=0.2):
         print("[INFO] loading images...")
 
         def _videos_to_img_key(video: list, key: str):
@@ -152,7 +156,7 @@ class DataReader:
         identities = os.listdir(data_path)
         identities.sort()
         for identity in identities:
-            num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity)
+            num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity, load_img)
 
             if num_of_videos_for_identity >= MIN_NUM_OF_VIDEOS:
                 num_of_identities = num_of_identities + 1

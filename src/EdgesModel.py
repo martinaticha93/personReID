@@ -2,23 +2,23 @@ from keras.callbacks import TensorBoard
 from keras.optimizers import SGD
 from sklearn.base import BaseEstimator, ClassifierMixin
 
-from LSTMNetwork import LSTMNetwork
-from datareader import SEQUENCE_LEN
+import EdgesNetwork
 from generators import train_generator, predict_generator
 
 BS = 20
 
-class LSTMModel(BaseEstimator, ClassifierMixin):
+
+class EdgesModel(BaseEstimator, ClassifierMixin):
     def __init__(self, trainX, trainY, testX, testY, num_of_classes, label_to_folder):
         self.trainX = trainX
         self.trainY = trainY
         self.testX = testX
         self.testY = testY
+
         self.num_of_classes = num_of_classes
         self.label_to_folder = label_to_folder
 
-        self.model = LSTMNetwork.build(width=64, height=64, depth=3, sequence_len=SEQUENCE_LEN,
-                                       num_of_classes=num_of_classes)
+        self.model = EdgesNetwork.build(num_of_classes=num_of_classes)
         self.TRAINING_SAMPLES = len(trainX)
         self.TEST_SAMPLES = len(testX)
 

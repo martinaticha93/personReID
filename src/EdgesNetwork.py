@@ -1,12 +1,17 @@
 from keras.layers import ConvLSTM2D, Dense, BatchNormalization, AveragePooling2D, Flatten
 from keras.models import Sequential
 
+from datareader import SEQUENCE_LEN
 
-class LSTMNetwork:
+
+class EdgesNetwork:
     @staticmethod
-    def build(width, height, depth, sequence_len, num_of_classes):
+    def build(num_of_classes):
         print("[INFO] building model...")
-        input_shape = (sequence_len, height, width, depth)
+        width = 64
+        height = 64
+        depth = 3
+        input_shape = (SEQUENCE_LEN, height, width, depth)
         model = Sequential()
 
         model.add(ConvLSTM2D(

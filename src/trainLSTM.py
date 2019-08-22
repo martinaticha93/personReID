@@ -4,8 +4,8 @@ import time
 import tensorflow as tf
 from keras.callbacks import Callback
 
-from LSTMModel import LSTMModel
-from datareader import DataReader
+from KeyPtsModel import KeyPtsModel
+from datareader import DataReader, load_edges
 from generators import train_generator, predict_generator
 
 BBOX_TRAIN = "../data/bbox_train_"
@@ -21,7 +21,7 @@ LOCAL_MARS_EDGES_POSTPRO_20 = '/media/martina/Data/School/CTU/thesis/data/mars_e
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
+DATA_PATH_TRAIN = LOCAL_MARS_EDGES_20
 MODEL = "model"
 LABELS = "labels"
 GPU = "7"
@@ -45,23 +45,26 @@ class TestCallback(Callback):
 def train():
     print("[INFO] obtaining data...")
     trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
-        DATA_PATH_TRAIN
+        DATA_PATH_TRAIN, load_edges
     )
 
-    tuned_params = {
-        "EPOCHS": [100],
-        "INIT_LR": [0.001, 0.0004],
-        "DECAY_FACTOR": [0.8]
-    }
-
-    model = LSTMModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
+    model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
+
+    # model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
+    # model.fit()
 
     # model = LSTMModel(
     #     num_of_classes=num_of_classes,
     #     training_samples=len(trainX),
     #     test_samples=len(testX)
     # )
+
+    tuned_params = {
+        "EPOCHS": [100],
+        "INIT_LR": [0.001, 0.0004],
+        "DECAY_FACTOR": [0.8]
+    }
 
     # split that is used for cross validation in grid search - for each split there's a run of the alg
     # seems to be useless because this way it splits twice
