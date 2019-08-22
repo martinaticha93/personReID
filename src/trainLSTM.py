@@ -24,7 +24,7 @@ MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
 MODEL = "model"
 LABELS = "labels"
-GPU = "7"
+GPU = "0"
 
 
 class TestCallback(Callback):
