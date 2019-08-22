@@ -85,12 +85,16 @@ def _get_img_score(image_name):
         return float(name_split[1][:-4])
     return 0
 
+
 def load_edges(data_path):
     image = cv2.imread(data_path)
     return cv2.resize(image, (64, 64))
 
+
 def load_key_pts(data_path):
-    return
+    keypoint_set = np.load(data_path)
+    return keypoint_set
+
 
 def _load_one_identity(data_path, identity, load_img):
     identity_data = {}
@@ -110,6 +114,9 @@ def _load_one_identity(data_path, identity, load_img):
 
         try:
             image = load_img(os.path.join(data_path, identity, file))
+
+            if file[-4:]=='.npy':
+                file = file[:-4]
 
             image_score = _get_img_score(file)
             video.append({'image': image, 'score': image_score, 'file_name': file})
@@ -155,7 +162,7 @@ class DataReader:
         unique_cameras = 0
         identities = os.listdir(data_path)
         identities.sort()
-        for identity in identities:
+        for identity in identities[0:2]:
             num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity, load_img)
 
             if num_of_videos_for_identity >= MIN_NUM_OF_VIDEOS:
@@ -173,8 +180,9 @@ class DataReader:
             else:
                 print("[INFO] skipped identity " + identity)
 
-        data = [_videos_to_img_key(video, key='image') for video in data]
-        data = np.array(data, dtype="float") / 255.0
+        data = np.array([_videos_to_img_key(video, key='image') for video in data])
+        if not load_img.__name__ == 'load_key_pts':
+            data = np.array(data, dtype="float") / 255.0
         labels = np.array(labels)
 
         cv = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups))

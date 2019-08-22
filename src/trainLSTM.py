@@ -5,7 +5,7 @@ import tensorflow as tf
 from keras.callbacks import Callback
 
 from KeyPtsModel import KeyPtsModel
-from datareader import DataReader, load_edges
+from datareader import DataReader, load_edges, load_key_pts
 from generators import train_generator, predict_generator
 
 BBOX_TRAIN = "../data/bbox_train_"
@@ -15,13 +15,13 @@ SERVER_MARS_EDGES_20 = "../data/mars_edges_selected_20"
 SERVER_MARS_KEYPTS_20 = "../data/mars_keypoints_selected_20"
 
 LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20'
-LOCAL_MARS_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_keypoints_selected_20'
+LOCAL_MARS_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_key_points_selected_20'
 LOCAL_MARS_EDGES_POSTPRO_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_postpro_selected_20'
 
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = LOCAL_MARS_EDGES_20
+DATA_PATH_TRAIN = LOCAL_MARS_KEYPTS_20
 MODEL = "model"
 LABELS = "labels"
 GPU = "7"
@@ -45,7 +45,7 @@ class TestCallback(Callback):
 def train():
     print("[INFO] obtaining data...")
     trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
-        DATA_PATH_TRAIN, load_edges
+        DATA_PATH_TRAIN, load_key_pts
     )
 
     model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)

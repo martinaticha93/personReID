@@ -4,9 +4,18 @@ import cv2
 import numpy as np
 
 DIRECTORY = '/media/martina/Data/School/CTU/thesis/data'
-INPUT_FOLDER = 'mars_edges'
-OUTPUT_FOLDER = 'mars_edges_selected_20'
+INPUT_FOLDER = 'key_points'
+OUTPUT_FOLDER = 'mars_key_points_selected_20'
 
+
+def read_and_write_img(data_path_in, data_path_out):
+    image = cv2.imread(data_path_in)
+    cv2.imwrite(data_path_out, image)
+
+
+def read_and_write_key_pts(data_path_in, data_path_out):
+    _, keypoint_set = np.load(os.path.join(data_path_in + '.npy'))
+    np.save(data_path_out, keypoint_set)
 
 def create_folder_from_file_names(file_names: list):
     os.mkdir(os.path.join(DIRECTORY, OUTPUT_FOLDER))
@@ -17,8 +26,11 @@ def create_folder_from_file_names(file_names: list):
             os.mkdir(os.path.join(DIRECTORY, OUTPUT_FOLDER, identity))
 
         original_file_name = file_name.split('_')[0] + '.jpg'
-        image = cv2.imread(os.path.join(DIRECTORY, INPUT_FOLDER, identity, original_file_name))
-        cv2.imwrite(os.path.join(DIRECTORY, OUTPUT_FOLDER, identity, file_name), image)
+
+        read_and_write_key_pts(
+            os.path.join(DIRECTORY, INPUT_FOLDER, identity, original_file_name),
+            os.path.join(DIRECTORY, OUTPUT_FOLDER, identity, file_name)
+        )
 
 
 if __name__ == '__main__':
