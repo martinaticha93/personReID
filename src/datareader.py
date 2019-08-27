@@ -1,5 +1,4 @@
 import os
-import pickle
 from typing import List
 
 import cv2
@@ -155,34 +154,6 @@ class DataReader:
         def _videos_to_img_key(video: list, key: str):
             return [img[key] for img in video]
 
-        def load_pickled_data():
-            with open('data.pickle', 'rb') as f:
-                # The protocol version used is detected automatically, so we do not
-                # have to specify it.
-                data = pickle.load(f)
-
-            with open('labels.pickle', 'rb') as f:
-                # The protocol version used is detected automatically, so we do not
-                # have to specify it.
-                labels = pickle.load(f)
-
-            with open('groups.pickle', 'rb') as f:
-                # The protocol version used is detected automatically, so we do not
-                # have to specify it.
-                groups = pickle.load(f)
-
-            with open('num_of_identities.pickle', 'rb') as f:
-                # The protocol version used is detected automatically, so we do not
-                # have to specify it.
-                num_of_identities = pickle.load(f)
-
-            with open('label_to_identity.pickle', 'rb') as f:
-                # The protocol version used is detected automatically, so we do not
-                # have to specify it.
-                label_to_identity = pickle.load(f)
-
-            return data, labels, groups, num_of_identities, label_to_identity
-
         def load_data():
             data = []
             labels = []
@@ -192,7 +163,7 @@ class DataReader:
             unique_cameras = 0
             identities = os.listdir(data_path)
             identities.sort()
-            for identity in identities[0:1]:
+            for identity in identities[:200]:
                 num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity, load_img)
 
                 if num_of_videos_for_identity >= MIN_NUM_OF_VIDEOS:
@@ -217,8 +188,7 @@ class DataReader:
 
             return data, labels, groups, num_of_identities, label_to_identity
 
-        # data, labels, groups, num_of_identities, label_to_identity = load_data()
-        data, labels, groups, num_of_identities, label_to_identity = load_pickled_data()
+        data, labels, groups, num_of_identities, label_to_identity = load_data()
 
         cv = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups))
         train_indices = cv[0][0]

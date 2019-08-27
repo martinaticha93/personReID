@@ -46,7 +46,7 @@ class TestCallback(Callback):
 def train():
     print("[INFO] obtaining data...")
     trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
-        DATA_PATH_TRAIN, load_key_pts
+        DATA_PATH_TRAIN, load_edges
     )
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
