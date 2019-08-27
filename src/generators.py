@@ -25,7 +25,7 @@ def train_generator(data, labels, batch_size, num_of_classes, dict):
         y_train = labels[idxs]
         y_train = np.array([np.tile(y_train, (1, 1))]).transpose()
         y_train = to_categorical(y=y_train, num_classes=num_of_classes)
-        yield x_train, y_train.reshape(y_train.shape[0], y_train.shape[2])
+        yield np.expand_dims(x_train, axis=4), y_train.reshape(y_train.shape[0], y_train.shape[2])
 
 
 def predict_generator(data, num_of_classes):

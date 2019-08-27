@@ -17,6 +17,7 @@ class KeyPtsModel(BaseEstimator, ClassifierMixin):
 
         self.num_of_classes = num_of_classes
         self.label_to_folder = label_to_folder
+
         self.model = KeyPtsNetwork.build(num_of_classes)
         self.TRAINING_SAMPLES = len(trainX)
         self.TEST_SAMPLES = len(testX)
