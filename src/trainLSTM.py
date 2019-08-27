@@ -4,6 +4,7 @@ import time
 import tensorflow as tf
 from keras.callbacks import Callback
 
+from EdgesModel import EdgesModel
 from KeyPtsModel import KeyPtsModel
 from datareader import DataReader, load_edges, load_key_pts
 from generators import train_generator, predict_generator
@@ -48,7 +49,7 @@ def train():
         DATA_PATH_TRAIN, load_key_pts
     )
 
-    model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
+    model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
 
     # model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
