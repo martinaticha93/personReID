@@ -13,7 +13,7 @@ BBOX_TRAIN = "../data/bbox_train_"
 SIMPLE = "../data/simple_data_set"
 
 SERVER_MARS_EDGES_20 = "../data/mars_edges_selected_20"
-SERVER_MARS_KEYPTS_20 = "../data/mars_keypoints_selected_20"
+SERVER_MARS_KEYPTS_20 = "../data/mars_key_points_selected_20"
 
 LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20'
 LOCAL_MARS_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_key_points_selected_20'
