@@ -2,7 +2,7 @@ from keras.callbacks import TensorBoard
 from keras.optimizers import SGD
 from sklearn.base import BaseEstimator, ClassifierMixin
 
-import EdgesNetwork
+from EdgesNetwork import EdgesNetwork
 from generators import train_generator, predict_generator
 
 BS = 20

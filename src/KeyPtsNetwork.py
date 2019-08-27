@@ -2,7 +2,7 @@ from keras import Sequential
 from keras.layers import BatchNormalization, AveragePooling2D, Flatten, Dense, LSTM
 
 
-class EdgesNetwork:
+class KeyPtsNetwork:
     @staticmethod
     def build(num_of_classes):
         print("[INFO] building model...")
