@@ -1,4 +1,5 @@
 import os
+import pickle
 from typing import List
 
 import cv2
@@ -115,7 +116,7 @@ def _load_one_identity(data_path, identity, load_img):
         try:
             image = load_img(os.path.join(data_path, identity, file))
 
-            if file[-4:]=='.npy':
+            if file[-4:] == '.npy':
                 file = file[:-4]
 
             image_score = _get_img_score(file)
@@ -154,36 +155,70 @@ class DataReader:
         def _videos_to_img_key(video: list, key: str):
             return [img[key] for img in video]
 
-        data = []
-        labels = []
-        groups = []
-        label_to_identity = {}
-        num_of_identities = -1
-        unique_cameras = 0
-        identities = os.listdir(data_path)
-        identities.sort()
-        for identity in identities[0:2]:
-            num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity, load_img)
+        def load_pickled_data():
+            with open('data.pickle', 'rb') as f:
+                # The protocol version used is detected automatically, so we do not
+                # have to specify it.
+                data = pickle.load(f)
 
-            if num_of_videos_for_identity >= MIN_NUM_OF_VIDEOS:
-                num_of_identities = num_of_identities + 1
-                label_to_identity[num_of_identities] = identity
-                identity_data = _select_identity_data(identity_data)
-                data, labels, groups, unique_cameras = _add_identity(data,
-                                                                     labels,
-                                                                     groups,
-                                                                     identity_data,
-                                                                     unique_cameras,
-                                                                     num_of_identities)
+            with open('labels.pickle', 'rb') as f:
+                # The protocol version used is detected automatically, so we do not
+                # have to specify it.
+                labels = pickle.load(f)
 
-                print("[INFO] loaded identity " + identity)
-            else:
-                print("[INFO] skipped identity " + identity)
+            with open('groups.pickle', 'rb') as f:
+                # The protocol version used is detected automatically, so we do not
+                # have to specify it.
+                groups = pickle.load(f)
 
-        data = np.array([_videos_to_img_key(video, key='image') for video in data])
-        if not load_img.__name__ == 'load_key_pts':
-            data = np.array(data, dtype="float") / 255.0
-        labels = np.array(labels)
+            with open('num_of_identities.pickle', 'rb') as f:
+                # The protocol version used is detected automatically, so we do not
+                # have to specify it.
+                num_of_identities = pickle.load(f)
+
+            with open('label_to_identity.pickle', 'rb') as f:
+                # The protocol version used is detected automatically, so we do not
+                # have to specify it.
+                label_to_identity = pickle.load(f)
+
+            return data, labels, groups, num_of_identities, label_to_identity
+
+        def load_data():
+            data = []
+            labels = []
+            groups = []
+            label_to_identity = {}
+            num_of_identities = -1
+            unique_cameras = 0
+            identities = os.listdir(data_path)
+            identities.sort()
+            for identity in identities:
+                num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity, load_img)
+
+                if num_of_videos_for_identity >= MIN_NUM_OF_VIDEOS:
+                    num_of_identities = num_of_identities + 1
+                    label_to_identity[num_of_identities] = identity
+                    identity_data = _select_identity_data(identity_data)
+                    data, labels, groups, unique_cameras = _add_identity(data,
+                                                                         labels,
+                                                                         groups,
+                                                                         identity_data,
+                                                                         unique_cameras,
+                                                                         num_of_identities)
+
+                    print("[INFO] loaded identity " + identity)
+                else:
+                    print("[INFO] skipped identity " + identity)
+
+            data = np.array([_videos_to_img_key(video, key='image') for video in data])
+            if not load_img.__name__ == 'load_key_pts':
+                data = np.array(data, dtype="float") / 255.0
+            labels = np.array(labels)
+
+            return data, labels, groups, num_of_identities, label_to_identity
+
+        # data, labels, groups, num_of_identities, label_to_identity = load_data()
+        data, labels, groups, num_of_identities, label_to_identity = load_pickled_data()
 
         cv = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups))
         train_indices = cv[0][0]
