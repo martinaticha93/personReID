@@ -10,8 +10,7 @@ class EdgesNetwork:
         print("[INFO] building model...")
         width = 64
         height = 64
-        depth = 3
-        input_shape = (SEQUENCE_LEN, height, width, depth)
+        input_shape = (SEQUENCE_LEN, height, width, 1)
         model = Sequential()
 
         model.add(ConvLSTM2D(
