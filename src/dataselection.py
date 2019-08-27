@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import scipy.misc
 
-DIRECTORY = '/media/martina/Data/School/CTU/thesis/data'
+DIRECTORY = "../data/mars_edges_selected_20"
 INPUT_FOLDER = 'mars_edges_selected_20'
 OUTPUT_FOLDER = 'mars_edges_selected_20'
 
