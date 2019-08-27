@@ -87,7 +87,7 @@ def _get_img_score(image_name):
 
 
 def load_edges(data_path):
-    image = cv2.imread(data_path)[:, :, 0]
+    image = cv2.imread(data_path)
     return cv2.resize(image, (64, 64))
 
 

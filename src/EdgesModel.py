@@ -5,8 +5,6 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from EdgesNetwork import EdgesNetwork
 from generators import train_generator, predict_generator
 
-BS = 20
-
 
 class EdgesModel(BaseEstimator, ClassifierMixin):
     def __init__(self, trainX, trainY, testX, testY, num_of_classes, label_to_folder):
@@ -55,7 +53,7 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
 
     def score(self, X, y, **kwargs):
         _, acc = self.model.evaluate_generator(
-            generator=train_generator(X, y, BS, self.num_of_classes, self.label_to_folder), steps=1)
+            generator=train_generator(X, y, self.BS, self.num_of_classes, self.label_to_folder), steps=1)
         print("[INFO] score.. " + str(acc))
         print("[INFO] X len.. " + str(len(X)))
         return acc

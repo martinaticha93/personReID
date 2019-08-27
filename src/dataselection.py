@@ -2,10 +2,18 @@ import os
 
 import cv2
 import numpy as np
+import scipy.misc
 
 DIRECTORY = '/media/martina/Data/School/CTU/thesis/data'
-INPUT_FOLDER = 'key_points'
-OUTPUT_FOLDER = 'mars_key_points_selected_20'
+INPUT_FOLDER = 'mars_edges_selected_20'
+OUTPUT_FOLDER = 'mars_edges_selected_20'
+
+def clean_third_dimension_of_images(data_path):
+    for folder in os.listdir(data_path):
+        print(folder)
+        for file_name in os.listdir(os.path.join(data_path, folder)):
+            image = cv2.imread(os.path.join(data_path, folder, file_name))[:, :, 0]
+            scipy.misc.imsave(os.path.join(data_path, folder, file_name), image)
 
 
 def read_and_write_img(data_path_in, data_path_out):
@@ -34,5 +42,6 @@ def create_folder_from_file_names(file_names: list):
 
 
 if __name__ == '__main__':
-    data_names = np.load('/media/martina/Data/School/CTU/thesis/data/data_names.npy')
-    create_folder_from_file_names(data_names)
+    clean_third_dimension_of_images(os.path.join(DIRECTORY, INPUT_FOLDER))
+    # data_names = np.load('/media/martina/Data/School/CTU/thesis/data/data_names.npy')
+    # create_folder_from_file_names(data_names)
