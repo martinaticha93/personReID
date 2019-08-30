@@ -4,15 +4,20 @@ import cv2
 import numpy as np
 import scipy.misc
 
-DIRECTORY = "../data"
+DIRECTORY = '/media/martina/Data/School/CTU/thesis/data'
 INPUT_FOLDER = 'mars_edges_selected_20'
 OUTPUT_FOLDER = 'mars_edges_selected_20'
 
 def clean_third_dimension_of_images(data_path):
-    for folder in os.listdir(data_path):
+    directory = os.listdir(data_path)
+    directory.sort()
+    for folder in directory:
         print(folder)
-        for file_name in os.listdir(os.path.join(data_path, folder)):
-            image = cv2.imread(os.path.join(data_path, folder, file_name))[:, :, 0]
+        directory_2 = os.listdir(os.path.join(data_path, folder))
+        directory_2.sort()
+        for file_name in directory_2:
+            image = cv2.imread(os.path.join(data_path, folder, file_name))
+            image = cv2.resize(image, (64, 64))
             scipy.misc.imsave(os.path.join(data_path, folder, file_name), image)
 
 
