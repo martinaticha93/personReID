@@ -91,8 +91,7 @@ def load_edges(data_path):
 
 
 def load_key_pts(data_path):
-    keypoint_set = np.load(data_path)
-    return keypoint_set
+    return np.load(data_path).flatten()
 
 
 def _load_one_identity(data_path, identity, load_img):
