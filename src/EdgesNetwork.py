@@ -6,11 +6,11 @@ from datareader import SEQUENCE_LEN
 
 class EdgesNetwork:
     @staticmethod
-    def build(num_of_classes):
+    def build(num_of_classes, width = 64):
         print("[INFO] building model...")
-        width = 64
-        height = 64
-        input_shape = (SEQUENCE_LEN, height, width, 1)
+        # width = 64
+        # height = 64
+        input_shape = (SEQUENCE_LEN, width, width, 3)
         model = Sequential()
 
         model.add(ConvLSTM2D(

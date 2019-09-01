@@ -11,12 +11,15 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
         self.trainX = trainX
         self.trainY = trainY
         self.testX = testX
+
+        img_width = testX[0,0].shape[0]
+
         self.testY = testY
 
         self.num_of_classes = num_of_classes
         self.label_to_folder = label_to_folder
 
-        self.model = EdgesNetwork.build(num_of_classes)
+        self.model = EdgesNetwork.build(num_of_classes, img_width)
         self.TRAINING_SAMPLES = len(trainX)
         self.TEST_SAMPLES = len(testX)
 

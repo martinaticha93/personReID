@@ -14,15 +14,17 @@ SIMPLE = "../data/simple_data_set"
 
 SERVER_MARS_EDGES_20 = "../data/mars_edges_selected_20"
 SERVER_MARS_KEYPTS_20 = "../data/mars_key_points_selected_20"
+SERVER_MARS_EDGES_KEYPTS_20 = "../data/mars_edges_with_kpts_selected_20_200x200"
 
 LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20'
 LOCAL_MARS_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_key_points_selected_20'
 LOCAL_MARS_EDGES_POSTPRO_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_postpro_selected_20'
+LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_with_kpts_selected_20_200x200'
 
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = LOCAL_MARS_KEYPTS_20
+DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
 MODEL = "model"
 LABELS = "labels"
 GPU = "7"
