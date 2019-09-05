@@ -14,7 +14,7 @@ SIMPLE = "../data/simple_data_set"
 
 SERVER_MARS_EDGES_20 = "../data/mars_edges_selected_20"
 SERVER_MARS_KEYPTS_20 = "../data/mars_key_points_selected_20"
-SERVER_MARS_EDGES_KEYPTS_20 = "../data/mars_edges_with_kpts_selected_20_200x200"
+SERVER_MARS_EDGES_KEYPTS_20 = "../data/mars_edges_with_kpts_selected_20_150x150"
 
 LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20'
 LOCAL_MARS_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_key_points_selected_20'
