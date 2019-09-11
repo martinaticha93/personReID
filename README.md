@@ -25,7 +25,7 @@ module load scikit-learn/0.19.2-foss-2018b-Python-3.6.4
 
 nvidia-smi
 
-export CUDA_VISIBLE_DEVICES=7
+export CUDA_VISIBLE_DEVICES=6
 
 
 
