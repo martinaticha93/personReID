@@ -24,7 +24,7 @@ LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_ed
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = LOCAL_MARS_KEYPTS_20
+DATA_PATH_TRAIN = SERVER_MARS_KEYPTS_20
 MODEL = "model"
 LABELS = "labels"
 TEST_X_KEY_POINTS = 'pickles/testX_k'
