@@ -24,18 +24,17 @@ LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_ed
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = SERVER_MARS_KEYPTS_20
+DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
 MODEL = "model"
 LABELS = "labels"
-TEST_X_KEY_POINTS = 'testX_key_points'
-TEST_Y_KEY_POINTS = 'testY_key_points'
-TEST_X_EDGES = 'testX_edges'
-TEST_Y_EDGES = 'testY_edges'
-TEST_X_EDGES_AND_KPTS = 'testX_edges_kpts'
-TEST_Y_EDGES_AND_KPTS = 'testY_edges_kpts'
+TEST_X_KEY_POINTS = 'testX_k'
+TEST_Y_KEY_POINTS = 'testY_k'
+TEST_X_EDGES = 'testX_e'
+TEST_Y_EDGES = 'testY_e'
+TEST_X_EDGES_AND_KPTS = 'testX_ek'
+TEST_Y_EDGES_AND_KPTS = 'testY_ek'
 
 GPU = "6"
-
 
 class TestCallback(Callback):
     def __init__(self, test_data, label_to_folder):
@@ -60,27 +59,28 @@ def _train_on_key_points():
         DATA_PATH_TRAIN, load_key_pts
     )
 
-    f = open("trainX", "wb")
+    f = open("trainX_k", "wb")
     f.write(pickle.dumps(trainX))
-
-    f = open("trainY", "wb")
+    f = open("trainY_k", "wb")
     f.write(pickle.dumps(trainY))
-
-    f = open("testX", "wb")
+    f = open(TEST_X_KEY_POINTS, "wb")
     f.write(pickle.dumps(testX))
-
-    f = open("testY", "wb")
+    f = open(TEST_Y_KEY_POINTS, "wb")
     f.write(pickle.dumps(testY))
-
-    f = open("num_of_classes", "wb")
+    f = open("num_of_classes_k", "wb")
     f.write(pickle.dumps(num_of_classes))
-
-    f = open("label_to_folder", "wb")
+    f = open("label_to_folder_k", "wb")
     f.write(pickle.dumps(label_to_folder))
-
-    f = open("groups_train", "wb")
+    f = open("groups_train_k", "wb")
     f.write(pickle.dumps(groups_train))
 
+    trainX = pickle.loads(open("trainX_k", "rb").read())
+    trainY = pickle.loads(open("trainY_k", "rb").read())
+    testX = pickle.loads(open("testX_k", "rb").read())
+    testY = pickle.loads(open("testY_k", "rb").read())
+    num_of_classes = pickle.loads(open("num_of_classes_k", "rb").read())
+    label_to_folder = pickle.loads(open("label_to_folder_k", "rb").read())
+    groups_train = pickle.loads(open("groups_train", "rb").read())
 
     f = open(TEST_X_KEY_POINTS, "wb")
     f.write(pickle.dumps(testX))
@@ -101,11 +101,28 @@ def _train_on_edges():
         DATA_PATH_TRAIN, load_edges
     )
 
+    f = open("trainX_e", "wb")
+    f.write(pickle.dumps(trainX))
+    f = open("trainY_e", "wb")
+    f.write(pickle.dumps(trainY))
     f = open(TEST_X_EDGES, "wb")
     f.write(pickle.dumps(testX))
-
     f = open(TEST_Y_EDGES, "wb")
     f.write(pickle.dumps(testY))
+    f = open("num_of_classes_e", "wb")
+    f.write(pickle.dumps(num_of_classes))
+    f = open("label_to_folder_e", "wb")
+    f.write(pickle.dumps(label_to_folder))
+    f = open("groups_train_e", "wb")
+    f.write(pickle.dumps(groups_train))
+
+    trainX = pickle.loads(open("trainX_k", "rb").read())
+    trainY = pickle.loads(open("trainY_k", "rb").read())
+    testX = pickle.loads(open("testX_k", "rb").read())
+    testY = pickle.loads(open("testY_k", "rb").read())
+    num_of_classes = pickle.loads(open("num_of_classes_k", "rb").read())
+    label_to_folder = pickle.loads(open("label_to_folder_k", "rb").read())
+    groups_train = pickle.loads(open("groups_train", "rb").read())
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
@@ -119,11 +136,28 @@ def _train_on_edges_and_kpts():
         DATA_PATH_TRAIN, load_edges
     )
 
+    f = open("trainX_ke", "wb")
+    f.write(pickle.dumps(trainX))
+    f = open("trainY_ke", "wb")
+    f.write(pickle.dumps(trainY))
     f = open(TEST_X_EDGES_AND_KPTS, "wb")
     f.write(pickle.dumps(testX))
-
     f = open(TEST_Y_EDGES_AND_KPTS, "wb")
     f.write(pickle.dumps(testY))
+    f = open("num_of_classes_ke", "wb")
+    f.write(pickle.dumps(num_of_classes))
+    f = open("label_to_folder_ke", "wb")
+    f.write(pickle.dumps(label_to_folder))
+    f = open("groups_train_ke", "wb")
+    f.write(pickle.dumps(groups_train))
+
+    trainX = pickle.loads(open("trainX_k", "rb").read())
+    trainY = pickle.loads(open("trainY_k", "rb").read())
+    testX = pickle.loads(open("testX_k", "rb").read())
+    testY = pickle.loads(open("testY_k", "rb").read())
+    num_of_classes = pickle.loads(open("num_of_classes_k", "rb").read())
+    label_to_folder = pickle.loads(open("label_to_folder_k", "rb").read())
+    groups_train = pickle.loads(open("groups_train", "rb").read())
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
