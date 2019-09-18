@@ -105,14 +105,12 @@ def _train_on_edges():
     f.write(pickle.dumps(testX))
     f = open(TEST_Y_EDGES, "wb")
     f.write(pickle.dumps(testY))
+    f = open("label_to_folder_e", "wb")
+    f.write(pickle.dumps(label_to_folder))
 
-    trainX = pickle.loads(open("trainX_k", "rb").read())
-    trainY = pickle.loads(open("trainY_k", "rb").read())
-    testX = pickle.loads(open("testX_k", "rb").read())
-    testY = pickle.loads(open("testY_k", "rb").read())
-    num_of_classes = pickle.loads(open("num_of_classes_k", "rb").read())
+    testX = pickle.loads(open(TEST_X_EDGES, "rb").read())
+    testY = pickle.loads(open(TEST_Y_EDGES, "rb").read())
     label_to_folder = pickle.loads(open("label_to_folder_k", "rb").read())
-    groups_train = pickle.loads(open("groups_train", "rb").read())
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
