@@ -24,7 +24,7 @@ LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_ed
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
+DATA_PATH_TRAIN = LOCAL_MARS_KEYPTS_20
 MODEL = "model"
 LABELS = "labels"
 TEST_X_KEY_POINTS = 'pickles/testX_k'
@@ -74,22 +74,16 @@ def _train_on_key_points():
     f = open("pickles/groups_train_k", "wb")
     f.write(pickle.dumps(groups_train))
 
-    trainX = pickle.loads(open("trainX_k", "rb").read())
-    trainY = pickle.loads(open("trainY_k", "rb").read())
-    testX = pickle.loads(open("testX_k", "rb").read())
-    testY = pickle.loads(open("testY_k", "rb").read())
-    num_of_classes = pickle.loads(open("num_of_classes_k", "rb").read())
-    label_to_folder = pickle.loads(open("label_to_folder_k", "rb").read())
-    groups_train = pickle.loads(open("groups_train", "rb").read())
+    trainX = pickle.loads(open("pickles/trainX_k", "rb").read())
+    trainY = pickle.loads(open("pickles/trainY_k", "rb").read())
+    testX = pickle.loads(open("pickles/testX_k", "rb").read())
+    testY = pickle.loads(open("pickles/testY_k", "rb").read())
+    num_of_classes = pickle.loads(open("pickles/num_of_classes_k", "rb").read())
+    label_to_folder = pickle.loads(open("pickles/label_to_folder_k", "rb").read())
+    groups_train = pickle.loads(open("pickles/groups_train", "rb").read())
 
-    f = open(TEST_X_KEY_POINTS, "wb")
-    f.write(pickle.dumps(testX))
-
-    f = open(TEST_Y_KEY_POINTS, "wb")
-    f.write(pickle.dumps(testY))
-
-    model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
-    model.fit()
+    # model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
+    # model.fit()
     return model.get_model(), label_to_folder
 
 
