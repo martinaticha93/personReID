@@ -27,12 +27,12 @@ MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
 MODEL = "model"
 LABELS = "labels"
-TEST_X_KEY_POINTS = 'testX_k'
-TEST_Y_KEY_POINTS = 'testY_k'
-TEST_X_EDGES = 'testX_e'
-TEST_Y_EDGES = 'testY_e'
-TEST_X_EDGES_AND_KPTS = 'testX_ek'
-TEST_Y_EDGES_AND_KPTS = 'testY_ek'
+TEST_X_KEY_POINTS = 'pickles/testX_k'
+TEST_Y_KEY_POINTS = 'pickles/testY_k'
+TEST_X_EDGES = 'pickles/testX_e'
+TEST_Y_EDGES = 'pickles/testY_e'
+TEST_X_EDGES_AND_KPTS = 'pickles/testX_ek'
+TEST_Y_EDGES_AND_KPTS = 'pickles/testY_ek'
 
 GPU = "6"
 
@@ -59,19 +59,19 @@ def _train_on_key_points():
         DATA_PATH_TRAIN, load_key_pts
     )
 
-    f = open("trainX_k", "wb")
+    f = open("pickles/trainX_k", "wb")
     f.write(pickle.dumps(trainX))
-    f = open("trainY_k", "wb")
+    f = open("pickles/trainY_k", "wb")
     f.write(pickle.dumps(trainY))
     f = open(TEST_X_KEY_POINTS, "wb")
     f.write(pickle.dumps(testX))
     f = open(TEST_Y_KEY_POINTS, "wb")
     f.write(pickle.dumps(testY))
-    f = open("num_of_classes_k", "wb")
+    f = open("pickles/num_of_classes_k", "wb")
     f.write(pickle.dumps(num_of_classes))
-    f = open("label_to_folder_k", "wb")
+    f = open("pickles/label_to_folder_k", "wb")
     f.write(pickle.dumps(label_to_folder))
-    f = open("groups_train_k", "wb")
+    f = open("pickles/groups_train_k", "wb")
     f.write(pickle.dumps(groups_train))
 
     trainX = pickle.loads(open("trainX_k", "rb").read())
