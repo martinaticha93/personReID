@@ -110,7 +110,7 @@ def _train_on_edges():
 
     testX = pickle.loads(open(TEST_X_EDGES, "rb").read())
     testY = pickle.loads(open(TEST_Y_EDGES, "rb").read())
-    label_to_folder = pickle.loads(open("label_to_folder_k", "rb").read())
+    label_to_folder = pickle.loads(open("label_to_folder_e", "rb").read())
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
