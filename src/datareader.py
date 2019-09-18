@@ -146,7 +146,7 @@ class DataReader:
     # and "groups_train" which is a list denoting the group of a video. Each group contains videos for unique
     # combination (identity, camera). This list is then used to split data into training a validation test so that
     # videos of the same (identity, camera) combination are not present in both data sets
-    def prepare_data(data_path, load_img, test_size=0.2):
+    def prepare_data(data_path, load_img, test_size=0.1):
         print("[INFO] loading images...")
 
         def _videos_to_img_key(video: list, key: str):
