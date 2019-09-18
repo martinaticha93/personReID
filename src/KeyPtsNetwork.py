@@ -8,7 +8,7 @@ class KeyPtsNetwork:
     @staticmethod
     def build(num_of_classes):
         print("[INFO] building model...")
-        input_shape = (SEQUENCE_LEN, 51)
+        input_shape = (SEQUENCE_LEN, 34)
         model = Sequential()
         model.add((LSTM(input_shape=input_shape, units=20, return_sequences=True, dropout=0.2)))
         model.add(BatchNormalization())

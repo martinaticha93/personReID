@@ -24,9 +24,13 @@ LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_ed
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
+DATA_PATH_TRAIN = LOCAL_MARS_KEYPTS_20
 MODEL = "model"
 LABELS = "labels"
+TEST_X_KEY_POINTS = 'testX_key_points'
+TEST_Y_KEY_POINTS = 'testY_key_points'
+TEST_X_EDGES = 'testX_edges'
+TEST_Y_EDGES = 'testY_edges'
 GPU = "6"
 
 
@@ -53,8 +57,15 @@ def _train_on_key_points():
         DATA_PATH_TRAIN, load_key_pts
     )
 
+    f = open(TEST_X_KEY_POINTS, "wb")
+    f.write(pickle.dumps(testX))
+
+    f = open(TEST_Y_KEY_POINTS, "wb")
+    f.write(pickle.dumps(testY))
+
     model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
+    return model.get_model(), label_to_folder
 
 
 def _train_on_edges():
@@ -65,24 +76,22 @@ def _train_on_edges():
         DATA_PATH_TRAIN, load_edges
     )
 
+    f = open(TEST_X_EDGES, "wb")
+    f.write(pickle.dumps(testX))
+
+    f = open(TEST_Y_EDGES, "wb")
+    f.write(pickle.dumps(testY))
+
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
+    return model.get_model(), label_to_folder
 
 
 def train():
     if 'key' in DATA_PATH_TRAIN:
-        _train_on_key_points()
+        return _train_on_key_points()
     elif 'edges' in DATA_PATH_TRAIN:
-        _train_on_edges()
-
-    # model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
-    # model.fit()
-
-    # model = LSTMModel(
-    #     num_of_classes=num_of_classes,
-    #     training_samples=len(trainX),
-    #     test_samples=len(testX)
-    # )
+        return _train_on_edges()
 
     tuned_params = {
         "EPOCHS": [100],
