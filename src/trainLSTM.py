@@ -60,6 +60,28 @@ def _train_on_key_points():
         DATA_PATH_TRAIN, load_key_pts
     )
 
+    f = open("trainX", "wb")
+    f.write(pickle.dumps(trainX))
+
+    f = open("trainY", "wb")
+    f.write(pickle.dumps(trainY))
+
+    f = open("testX", "wb")
+    f.write(pickle.dumps(testX))
+
+    f = open("testY", "wb")
+    f.write(pickle.dumps(testY))
+
+    f = open("num_of_classes", "wb")
+    f.write(pickle.dumps(num_of_classes))
+
+    f = open("label_to_folder", "wb")
+    f.write(pickle.dumps(label_to_folder))
+
+    f = open("groups_train", "wb")
+    f.write(pickle.dumps(groups_train))
+
+
     f = open(TEST_X_KEY_POINTS, "wb")
     f.write(pickle.dumps(testX))
 
