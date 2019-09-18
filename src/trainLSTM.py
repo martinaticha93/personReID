@@ -55,27 +55,29 @@ class TestCallback(Callback):
 
 
 def _train_on_key_points():
+    label_to_folder = pickle.loads(open("pickles/label_to_folder_k", "rb").read())
+
     print('[INFO] key points training...')
     print("[INFO] obtaining data...")
-
-    trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
-        DATA_PATH_TRAIN, load_key_pts
-    )
-
-    f = open("pickles/trainX_k", "wb")
-    f.write(pickle.dumps(trainX))
-    f = open("pickles/trainY_k", "wb")
-    f.write(pickle.dumps(trainY))
-    f = open(TEST_X_KEY_POINTS, "wb")
-    f.write(pickle.dumps(testX))
-    f = open(TEST_Y_KEY_POINTS, "wb")
-    f.write(pickle.dumps(testY))
-    f = open("pickles/num_of_classes_k", "wb")
-    f.write(pickle.dumps(num_of_classes))
-    f = open("pickles/label_to_folder_k", "wb")
-    f.write(pickle.dumps(label_to_folder))
-    f = open("pickles/groups_train_k", "wb")
-    f.write(pickle.dumps(groups_train))
+    #
+    # trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
+    #     DATA_PATH_TRAIN, load_key_pts
+    # )
+    #
+    # f = open("pickles/trainX_k", "wb")
+    # f.write(pickle.dumps(trainX))
+    # f = open("pickles/trainY_k", "wb")
+    # f.write(pickle.dumps(trainY))
+    # f = open(TEST_X_KEY_POINTS, "wb")
+    # f.write(pickle.dumps(testX))
+    # f = open(TEST_Y_KEY_POINTS, "wb")
+    # f.write(pickle.dumps(testY))
+    # f = open("pickles/num_of_classes_k", "wb")
+    # f.write(pickle.dumps(num_of_classes))
+    # f = open("pickles/label_to_folder_k", "wb")
+    # f.write(pickle.dumps(label_to_folder))
+    # f = open("pickles/groups_train_k", "wb")
+    # f.write(pickle.dumps(groups_train))
 
     trainX = pickle.loads(open("pickles/trainX_k", "rb").read())
     trainY = pickle.loads(open("pickles/trainY_k", "rb").read())
@@ -92,11 +94,6 @@ def _train_on_key_points():
 
 def _train_on_edges():
     print('[INFO] edges training...')
-
-    testX = pickle.loads(open(TEST_X_EDGES, "rb").read())
-    testY = pickle.loads(open(TEST_Y_EDGES, "rb").read())
-    label_to_folder = pickle.loads(open("pickles/label_to_folder_e", "rb").read())
-
     print("[INFO] obtaining data...")
 
     trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
@@ -109,10 +106,6 @@ def _train_on_edges():
     f.write(pickle.dumps(testY))
     f = open("pickles/label_to_folder_e", "wb")
     f.write(pickle.dumps(label_to_folder))
-
-    testX = pickle.loads(open(TEST_X_EDGES, "rb").read())
-    testY = pickle.loads(open(TEST_Y_EDGES, "rb").read())
-    label_to_folder = pickle.loads(open("pickles/label_to_folder_e", "rb").read())
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()

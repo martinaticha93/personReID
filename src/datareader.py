@@ -175,7 +175,8 @@ class DataReader:
                                                                          unique_cameras,
                                                                          num_of_identities)
 
-                    print("[INFO] loaded identity " + identity)
+                    if int(identity) % 10 == 0:
+                        print("[INFO] loaded identity " + identity)
                 else:
                     print("[INFO] skipped identity " + identity)
 
