@@ -24,7 +24,7 @@ LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_ed
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = SERVER_MARS_KEYPTS_20
+DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
 MODEL = "model"
 LABELS = "labels"
 TEST_X_KEY_POINTS = 'pickles/testX_k'
@@ -80,10 +80,10 @@ def _train_on_key_points():
     testY = pickle.loads(open("pickles/testY_k", "rb").read())
     num_of_classes = pickle.loads(open("pickles/num_of_classes_k", "rb").read())
     label_to_folder = pickle.loads(open("pickles/label_to_folder_k", "rb").read())
-    groups_train = pickle.loads(open("pickles/groups_train", "rb").read())
+    groups_train = pickle.loads(open("pickles/groups_train_k", "rb").read())
 
-    # model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
-    # model.fit()
+    model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
+    model.fit()
     return model.get_model(), label_to_folder
 
 
