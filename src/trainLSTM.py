@@ -92,6 +92,11 @@ def _train_on_key_points():
 
 def _train_on_edges():
     print('[INFO] edges training...')
+
+    testX = pickle.loads(open(TEST_X_EDGES, "rb").read())
+    testY = pickle.loads(open(TEST_Y_EDGES, "rb").read())
+    label_to_folder = pickle.loads(open("pickles/label_to_folder_e", "rb").read())
+
     print("[INFO] obtaining data...")
 
     trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
@@ -102,12 +107,12 @@ def _train_on_edges():
     f.write(pickle.dumps(testX))
     f = open(TEST_Y_EDGES, "wb")
     f.write(pickle.dumps(testY))
-    f = open("label_to_folder_e", "wb")
+    f = open("pickles/label_to_folder_e", "wb")
     f.write(pickle.dumps(label_to_folder))
 
     testX = pickle.loads(open(TEST_X_EDGES, "rb").read())
     testY = pickle.loads(open(TEST_Y_EDGES, "rb").read())
-    label_to_folder = pickle.loads(open("label_to_folder_e", "rb").read())
+    label_to_folder = pickle.loads(open("pickles/label_to_folder_e", "rb").read())
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
