@@ -101,20 +101,10 @@ def _train_on_edges():
         DATA_PATH_TRAIN, load_edges
     )
 
-    f = open("trainX_e", "wb")
-    f.write(pickle.dumps(trainX))
-    f = open("trainY_e", "wb")
-    f.write(pickle.dumps(trainY))
     f = open(TEST_X_EDGES, "wb")
     f.write(pickle.dumps(testX))
     f = open(TEST_Y_EDGES, "wb")
     f.write(pickle.dumps(testY))
-    f = open("num_of_classes_e", "wb")
-    f.write(pickle.dumps(num_of_classes))
-    f = open("label_to_folder_e", "wb")
-    f.write(pickle.dumps(label_to_folder))
-    f = open("groups_train_e", "wb")
-    f.write(pickle.dumps(groups_train))
 
     trainX = pickle.loads(open("trainX_k", "rb").read())
     trainY = pickle.loads(open("trainY_k", "rb").read())
@@ -136,20 +126,10 @@ def _train_on_edges_and_kpts():
         DATA_PATH_TRAIN, load_edges
     )
 
-    f = open("trainX_ke", "wb")
-    f.write(pickle.dumps(trainX))
-    f = open("trainY_ke", "wb")
-    f.write(pickle.dumps(trainY))
     f = open(TEST_X_EDGES_AND_KPTS, "wb")
     f.write(pickle.dumps(testX))
     f = open(TEST_Y_EDGES_AND_KPTS, "wb")
     f.write(pickle.dumps(testY))
-    f = open("num_of_classes_ke", "wb")
-    f.write(pickle.dumps(num_of_classes))
-    f = open("label_to_folder_ke", "wb")
-    f.write(pickle.dumps(label_to_folder))
-    f = open("groups_train_ke", "wb")
-    f.write(pickle.dumps(groups_train))
 
     trainX = pickle.loads(open("trainX_k", "rb").read())
     trainY = pickle.loads(open("trainY_k", "rb").read())
