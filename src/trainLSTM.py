@@ -24,7 +24,7 @@ LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_ed
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
+DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
 MODEL_k = "model_k"
 MODEL_e = "model_e"
 MODEL_ke = "model_ke"
@@ -124,6 +124,8 @@ def _train_on_edges_and_kpts():
     f.write(pickle.dumps(testX))
     f = open(TEST_Y_EDGES_AND_KPTS, "wb")
     f.write(pickle.dumps(testY))
+    f = open("pickles/label_to_folder_ke", "wb")
+    f.write(pickle.dumps(label_to_folder))
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
