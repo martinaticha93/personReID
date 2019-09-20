@@ -41,11 +41,11 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
         self.model.fit_generator(
             generator=train_generator(self.trainX, self.trainY, self.BS, self.num_of_classes,
                                       self.label_to_folder),
-            steps_per_epoch=self.TRAINING_SAMPLES / self.BS,
+            # steps_per_epoch=self.TRAINING_SAMPLES / self.BS,
+            steps_per_epoch=10,
             validation_data=train_generator(self.testX, self.testY, self.BS, self.num_of_classes,
                                             self.label_to_folder),
-            # validation_steps=self.TRAINING_SAMPLES / self.BS,
-            validation_steps=10,
+            validation_steps=self.TRAINING_SAMPLES / self.BS,
             epochs=self.EPOCHS,
             verbose=1,
             callbacks=[self.tensorboard]
