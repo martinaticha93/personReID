@@ -13,37 +13,72 @@ import scipy.misc
 
 class PP:
 
+    def draw_line(self, a, b, img_edges, color):
+        a1 = a[0]
+        a2 = a[1]
+        b1 = b[0]
+        b2 = b[1]
+        if (a1 != 0 and a2 != 0 and b1 != 0 and b2 != 0):
+            cv2.line(img_edges, (int(a1), int(a2)), (int(b1), int(b2)), color, 1)
+        return img_edges
+
     def draw_points(self, points, edges_dir, identity, img_name, output_dir):
         colors = [
-            [230, 176, 170],
-            [192, 57, 43],
-            [100, 30, 22],
-            [195, 155, 211],
-            [99, 57, 116],
-            [127, 179, 213],
-            [26, 82, 118],
-            [118, 215, 196],
-            [14, 98, 81],
-            [244, 208, 63],
-            [125, 102, 8],
-            [230, 126, 34],
-            [120, 66, 18],
-            [189, 195, 199],
-            [77, 86, 86],
-            [213, 245, 227],
-            [28, 40, 51]
+            [165, 42, 42],
+            [255, 165, 0],
+            [255, 215, 0],
+            [184, 134, 11],
+            [154, 205, 50],
+            [0, 100, 0],
+            [32, 178, 170],
+            [0, 255, 255],
+            [30, 144, 255],
+            [25, 25, 112],
+            [138, 43, 226],
+            [139, 0, 139],
+            [218, 112, 214],
+            [188, 143, 143],
+            [253, 245, 230],
+            [240, 255, 240],
+            [0, 0, 0]
         ]
         img_edges = cv2.imread(os.path.join(edges_dir, identity, img_name))
-        for i in range(17):
-            x = points[i, 0]
-            y = points[i, 1]
-            if (x != 0 and y != 0):
-                # img = cv2.imread(os.path.join('/media/martina/Data/School/CTU/thesis/data/mars', '0001', '0001C1T0001F001.jpg'))
-                cv2.line(img_edges, (int(x) - 1, int(y) - 1), (int(x) + 1, int(y) + 1), colors[i], 2)
-                cv2.line(img_edges, (int(x) + 1, int(y) - 1), (int(x) - 1, int(y) + 1), colors[i], 2)
-        # cv2.line(img, (int(20) - 2, int(20) - 2), (int(20) + 2, int(20) + 2), (0, 20, 200), 2)
+
+        points = points[2:17, 0:2]
+        # hends
+        color = [0, 0, 100]
+        img_edges = self.draw_line(points[1, :], points[3, :], img_edges, color)
+        img_edges = self.draw_line(points[3, :], points[5, :], img_edges, color)
+        img_edges = self.draw_line(points[5, :], points[7, :], img_edges, color)
+        img_edges = self.draw_line(points[2, :], points[4, :], img_edges, color)
+        img_edges = self.draw_line(points[4, :], points[6, :], img_edges, color)
+        img_edges = self.draw_line(points[6, :], points[8, :], img_edges, color)
+
+        # body
+        color = [0, 100, 0]
+        img_edges = self.draw_line(points[1, :], points[2, :], img_edges, color)
+        img_edges = self.draw_line(points[1, :], points[9, :], img_edges, color)
+        img_edges = self.draw_line(points[2, :], points[10, :], img_edges, color)
+        img_edges = self.draw_line(points[9, :], points[10, :], img_edges, color)
+
+        # lengs
+        color = [100, 0, 0]
+        img_edges = self.draw_line(points[9, :], points[11, :], img_edges, color)
+        img_edges = self.draw_line(points[11, :], points[13, :], img_edges, color)
+        img_edges = self.draw_line(points[10, :], points[12, :], img_edges, color)
+        img_edges = self.draw_line(points[12, :], points[14, :], img_edges, color)
+
+        # for i in range(17):
+        #     x = points[i, 0]
+        #     y = points[i, 1]
+        #     if (x != 0 and y != 0):
+        #         # img = cv2.imread(os.path.join('/media/martina/Data/School/CTU/thesis/data/mars', '0001', '0001C1T0001F001.jpg'))
+        #         cv2.line(img_edges, (int(x) - 1, int(y) - 1), (int(x) + 1, int(y) + 1), colors[i], 2)
+        #         cv2.line(img_edges, (int(x) + 1, int(y) - 1), (int(x) - 1, int(y) + 1), colors[i], 2)
+
         scipy.misc.imsave(
             os.path.join(os.path.join(output_dir, identity, img_name)), img_edges)
+        # cv2.line(img, (int(20) - 2, int(20) - 2), (int(20) + 2, int(20) + 2), (0, 20, 200), 2)
 
     def __init__(self):
         parser = argparse.ArgumentParser()

@@ -21,7 +21,7 @@ class KeyPtsModel(BaseEstimator, ClassifierMixin):
         self.TEST_SAMPLES = len(testX)
 
         self.INIT_LR = 0.005
-        self.EPOCHS = 100
+        self.EPOCHS = 2
         self.BS = 30
 
         print("[INFO] train data size: " + str(self.TRAINING_SAMPLES))

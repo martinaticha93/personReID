@@ -38,7 +38,6 @@ TEST_Y_EDGES_AND_KPTS = 'pickles/testY_ek'
 
 GPU = "6"
 
-
 class TestCallback(Callback):
     def __init__(self, test_data, label_to_folder):
         self.test_data = test_data
@@ -144,6 +143,30 @@ def train():
 if __name__ == '__main__':
     start = int(round(time.time()))
     with tf.device('/gpu:' + GPU):
-        train()
-        end = int(round(time.time()))
-        print("[INFO] the training took..." + str(end - start) + "second")
+
+        DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
+        for i in range(4):
+            start = int(round(time.time()))
+            print(f"[INFO] edges keypoints training {i}")
+            train()
+            end = int(round(time.time()))
+            print("[INFO] the training took..." + str(end - start) + "second")
+        print("_______________________________________________________________________________________________________")
+
+        DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
+        for i in range(4):
+            start = int(round(time.time()))
+            print(f"[INFO] edges training {i}")
+            train()
+            end = int(round(time.time()))
+            print("[INFO] the training took..." + str(end - start) + "second")
+        print("_______________________________________________________________________________________________________")
+
+        DATA_PATH_TRAIN = SERVER_MARS_KEYPTS_20
+        for i in range(4):
+            start = int(round(time.time()))
+            print(f"[INFO] key points training {i}")
+            train()
+            end = int(round(time.time()))
+            print("[INFO] the training took..." + str(end - start) + "second")
+        print("_______________________________________________________________________________________________________")
