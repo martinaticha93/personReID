@@ -53,7 +53,7 @@ class TestCallback(Callback):
         print('\nTesting loss: {}, acc: {}\n'.format(loss, acc))
 
 
-def _train_on_key_points():
+def _train_on_key_points(name_of_run):
     label_to_folder = pickle.loads(open("pickles/label_to_folder_k", "rb").read())
 
     print('[INFO] key points training...')
@@ -88,10 +88,10 @@ def _train_on_key_points():
 
     model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
-    model.get_model().save(MODEL_k)
+    model.get_model().save(name_of_run + MODEL_k)
 
 
-def _train_on_edges():
+def _train_on_edges(name_of_run):
     print('[INFO] edges training...')
     print("[INFO] obtaining data...")
 
@@ -99,19 +99,19 @@ def _train_on_edges():
         DATA_PATH_TRAIN, load_edges
     )
 
-    f = open(TEST_X_EDGES, "wb")
+    f = open(name_of_run + TEST_X_EDGES, "wb")
     f.write(pickle.dumps(testX))
-    f = open(TEST_Y_EDGES, "wb")
+    f = open(name_of_run + TEST_Y_EDGES, "wb")
     f.write(pickle.dumps(testY))
-    f = open("pickles/label_to_folder_e", "wb")
+    f = open(name_of_run + "pickles/label_to_folder_e", "wb")
     f.write(pickle.dumps(label_to_folder))
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
-    model.get_model().save(MODEL_e)
+    model.get_model().save(name_of_run + MODEL_e)
 
 
-def _train_on_edges_and_kpts():
+def _train_on_edges_and_kpts(name_of_run):
     print('[INFO] edges and key points training...')
     print("[INFO] obtaining data...")
 
@@ -119,25 +119,25 @@ def _train_on_edges_and_kpts():
         DATA_PATH_TRAIN, load_edges
     )
 
-    f = open(TEST_X_EDGES_AND_KPTS, "wb")
+    f = open(name_of_run + TEST_X_EDGES_AND_KPTS, "wb")
     f.write(pickle.dumps(testX))
-    f = open(TEST_Y_EDGES_AND_KPTS, "wb")
+    f = open(name_of_run + TEST_Y_EDGES_AND_KPTS, "wb")
     f.write(pickle.dumps(testY))
-    f = open("pickles/label_to_folder_ke", "wb")
+    f = open(name_of_run + "pickles/label_to_folder_ke", "wb")
     f.write(pickle.dumps(label_to_folder))
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
-    model.get_model().save(MODEL_ke)
+    model.get_model().save(name_of_run + MODEL_ke)
 
 
-def train():
+def train(name_of_run):
     if 'edges_with_kpts' in DATA_PATH_TRAIN:
-        _train_on_edges_and_kpts()
+        _train_on_edges_and_kpts(name_of_run)
     elif 'key' in DATA_PATH_TRAIN:
-        _train_on_key_points()
+        _train_on_key_points(name_of_run)
     elif 'edges' in DATA_PATH_TRAIN:
-        _train_on_edges()
+        _train_on_edges(name_of_run)
 
 
 if __name__ == '__main__':
@@ -148,7 +148,7 @@ if __name__ == '__main__':
         for i in range(4):
             start = int(round(time.time()))
             print(f"[INFO] edges keypoints training {i}")
-            train()
+            train(f"ke_{i}_")
             end = int(round(time.time()))
             print("[INFO] the training took..." + str(end - start) + "second")
         print("_______________________________________________________________________________________________________")
@@ -157,7 +157,7 @@ if __name__ == '__main__':
         for i in range(4):
             start = int(round(time.time()))
             print(f"[INFO] edges training {i}")
-            train()
+            train(f"e_{i}_")
             end = int(round(time.time()))
             print("[INFO] the training took..." + str(end - start) + "second")
         print("_______________________________________________________________________________________________________")
@@ -166,7 +166,7 @@ if __name__ == '__main__':
         for i in range(4):
             start = int(round(time.time()))
             print(f"[INFO] key points training {i}")
-            train()
+            train(f"k_{i}_")
             end = int(round(time.time()))
             print("[INFO] the training took..." + str(end - start) + "second")
         print("_______________________________________________________________________________________________________")
