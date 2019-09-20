@@ -24,7 +24,7 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
         self.TEST_SAMPLES = len(testX)
 
         self.INIT_LR = 0.005
-        self.EPOCHS = 2
+        self.EPOCHS = 100
         self.BS = 30
 
         print("[INFO] train data size: " + str(self.TRAINING_SAMPLES))
@@ -44,7 +44,8 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
             steps_per_epoch=self.TRAINING_SAMPLES / self.BS,
             validation_data=train_generator(self.testX, self.testY, self.BS, self.num_of_classes,
                                             self.label_to_folder),
-            validation_steps=self.TRAINING_SAMPLES / self.BS,
+            # validation_steps=self.TRAINING_SAMPLES / self.BS,
+            validation_steps=10,
             epochs=self.EPOCHS,
             verbose=1,
             callbacks=[self.tensorboard]
