@@ -89,7 +89,7 @@ def _train_on_key_points(name_of_run):
 
     model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
-    model.get_model().save(name_of_run + MODEL_k)
+    model.get_model().save(MODEL_k + name_of_run)
 
 
 def _train_on_edges(name_of_run):
@@ -100,16 +100,16 @@ def _train_on_edges(name_of_run):
         DATA_PATH_TRAIN, load_edges
     )
 
-    f = open(name_of_run + TEST_X_EDGES, "wb")
+    f = open(TEST_X_EDGES + name_of_run, "wb")
     f.write(pickle.dumps(testX))
-    f = open(name_of_run + TEST_Y_EDGES, "wb")
+    f = open(TEST_Y_EDGES + name_of_run, "wb")
     f.write(pickle.dumps(testY))
-    f = open(name_of_run + "pickles/label_to_folder_e", "wb")
+    f = open("pickles/label_to_folder_e" + name_of_run, "wb")
     f.write(pickle.dumps(label_to_folder))
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
-    model.get_model().save(name_of_run + MODEL_e)
+    model.get_model().save(MODEL_e + name_of_run)
 
 
 def _train_on_edges_and_kpts(name_of_run):
@@ -120,16 +120,16 @@ def _train_on_edges_and_kpts(name_of_run):
         DATA_PATH_TRAIN, load_edges
     )
 
-    f = open(name_of_run + TEST_X_EDGES_AND_KPTS, "wb")
+    f = open(TEST_X_EDGES_AND_KPTS + name_of_run, "wb")
     f.write(pickle.dumps(testX))
-    f = open(name_of_run + TEST_Y_EDGES_AND_KPTS, "wb")
+    f = open(TEST_Y_EDGES_AND_KPTS + name_of_run, "wb")
     f.write(pickle.dumps(testY))
-    f = open(name_of_run + "pickles/label_to_folder_ke", "wb")
+    f = open("pickles/label_to_folder_ke" + name_of_run, "wb")
     f.write(pickle.dumps(label_to_folder))
 
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
-    model.get_model().save(name_of_run + MODEL_ke)
+    model.get_model().save(MODEL_ke + name_of_run)
 
 
 def train(name_of_run):
@@ -149,7 +149,7 @@ if __name__ == '__main__':
         for i in range(4):
             start = int(round(time.time()))
             print(f"[INFO] edges training {i}")
-            train(f"e_{i}_")
+            train(f"_e_{i}_")
             end = int(round(time.time()))
             print("[INFO] the training took..." + str(end - start) + "second")
         print("_______________________________________________________________________________________________________")
@@ -158,7 +158,7 @@ if __name__ == '__main__':
         for i in range(4):
             start = int(round(time.time()))
             print(f"[INFO] edges keypoints training {i}")
-            train(f"ke_{i}_")
+            train(f"_ke_{i}_")
             end = int(round(time.time()))
             print("[INFO] the training took..." + str(end - start) + "second")
         print("_______________________________________________________________________________________________________")
@@ -167,7 +167,7 @@ if __name__ == '__main__':
         for i in range(4):
             start = int(round(time.time()))
             print(f"[INFO] key points training {i}")
-            train(f"k_{i}_")
+            train(f"_k_{i}_")
             end = int(round(time.time()))
             print("[INFO] the training took..." + str(end - start) + "second")
         print("_______________________________________________________________________________________________________")
