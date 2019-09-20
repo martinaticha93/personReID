@@ -6,7 +6,7 @@ from keras.callbacks import Callback
 
 from EdgesModel import EdgesModel
 from KeyPtsModel import KeyPtsModel
-from datareader import DataReader, load_edges, load_key_pts
+from datareader import DataReader, load_edges
 from generators import train_generator, predict_generator
 
 BBOX_TRAIN = "../data/bbox_train_"
@@ -37,6 +37,7 @@ TEST_X_EDGES_AND_KPTS = 'pickles/testX_ek'
 TEST_Y_EDGES_AND_KPTS = 'pickles/testY_ek'
 
 GPU = "6"
+
 
 class TestCallback(Callback):
     def __init__(self, test_data, label_to_folder):
@@ -144,20 +145,20 @@ if __name__ == '__main__':
     start = int(round(time.time()))
     with tf.device('/gpu:' + GPU):
 
-        DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
-        for i in range(4):
-            start = int(round(time.time()))
-            print(f"[INFO] edges keypoints training {i}")
-            train(f"ke_{i}_")
-            end = int(round(time.time()))
-            print("[INFO] the training took..." + str(end - start) + "second")
-        print("_______________________________________________________________________________________________________")
-
         DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
         for i in range(4):
             start = int(round(time.time()))
             print(f"[INFO] edges training {i}")
             train(f"e_{i}_")
+            end = int(round(time.time()))
+            print("[INFO] the training took..." + str(end - start) + "second")
+        print("_______________________________________________________________________________________________________")
+
+        DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
+        for i in range(4):
+            start = int(round(time.time()))
+            print(f"[INFO] edges keypoints training {i}")
+            train(f"ke_{i}_")
             end = int(round(time.time()))
             print("[INFO] the training took..." + str(end - start) + "second")
         print("_______________________________________________________________________________________________________")
