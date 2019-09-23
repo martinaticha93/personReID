@@ -25,9 +25,9 @@ MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joint
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
 DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
-MODEL_k = "model_k"
-MODEL_e = "model_e"
-MODEL_ke = "model_ke"
+MODEL_k = "models/model_k"
+MODEL_e = "models/model_e"
+MODEL_ke = "models/model_ke"
 LABELS = "labels"
 TEST_X_KEY_POINTS = 'pickles/testX_k'
 TEST_Y_KEY_POINTS = 'pickles/testY_k'
@@ -145,14 +145,14 @@ if __name__ == '__main__':
     start = int(round(time.time()))
     with tf.device('/gpu:' + GPU):
 
-        DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
-        for i in range(4):
-            start = int(round(time.time()))
-            print(f"[INFO] edges training {i}")
-            train(f"_e_{i}_")
-            end = int(round(time.time()))
-            print("[INFO] the training took..." + str(end - start) + "second")
-        print("_______________________________________________________________________________________________________")
+        # DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
+        # for i in range(4):
+        #     start = int(round(time.time()))
+        #     print(f"[INFO] edges training {i}")
+        #     train(f"_e_{i}_")
+        #     end = int(round(time.time()))
+        #     print("[INFO] the training took..." + str(end - start) + "second")
+        # print("_______________________________________________________________________________________________________")
 
         DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
         for i in range(4):
