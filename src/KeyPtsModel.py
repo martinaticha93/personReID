@@ -20,8 +20,8 @@ class KeyPtsModel(BaseEstimator, ClassifierMixin):
         self.TRAINING_SAMPLES = len(trainX)
         self.TEST_SAMPLES = len(testX)
 
-        self.INIT_LR = 0.005
-        self.EPOCHS = 100
+        self.INIT_LR = 0.001
+        self.EPOCHS = 50
         self.BS = 30
 
         print("[INFO] train data size: " + str(self.TRAINING_SAMPLES))
@@ -36,11 +36,9 @@ class KeyPtsModel(BaseEstimator, ClassifierMixin):
 
     def fit(self):
         self.model.fit_generator(
-            generator=train_generator(self.trainX, self.trainY, self.BS, self.num_of_classes,
-                                      self.label_to_folder),
+            generator=train_generator(self.trainX, self.trainY, self.BS, self.num_of_classes, self.label_to_folder),
             steps_per_epoch=self.TRAINING_SAMPLES / self.BS,
-            validation_data=train_generator(self.testX, self.testY, self.BS, self.num_of_classes,
-                                            self.label_to_folder),
+            validation_data=train_generator(self.testX, self.testY, self.BS, self.num_of_classes, self.label_to_folder),
             validation_steps=self.TRAINING_SAMPLES / self.BS,
             epochs=self.EPOCHS,
             verbose=1,

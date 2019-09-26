@@ -6,7 +6,7 @@ from keras.callbacks import Callback
 
 from EdgesModel import EdgesModel
 from KeyPtsModel import KeyPtsModel
-from datareader import DataReader, load_edges
+from datareader import DataReader, load_edges, load_key_pts
 from generators import train_generator, predict_generator
 
 BBOX_TRAIN = "../data/bbox_train_"
@@ -16,7 +16,7 @@ SERVER_MARS_EDGES_20 = "../data/mars_edges_selected_20"
 SERVER_MARS_KEYPTS_20 = "../data/mars_key_points_selected_20"
 SERVER_MARS_EDGES_KEYPTS_20 = "../data/mars_edges_with_kpts_selected_20_64x64"
 
-LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20'
+LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20_64x64'
 LOCAL_MARS_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_key_points_selected_20'
 LOCAL_MARS_EDGES_POSTPRO_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_postpro_selected_20'
 LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_with_kpts_selected_20_64x64'
@@ -24,7 +24,7 @@ LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_ed
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
+DATA_PATH_TRAIN = LOCAL_MARS_KEYPTS_20
 MODEL_k = "models/model_k"
 MODEL_e = "models/model_e"
 MODEL_ke = "models/model_ke"
@@ -55,7 +55,6 @@ class TestCallback(Callback):
 
 
 def _train_on_key_points(name_of_run):
-    label_to_folder = pickle.loads(open("pickles/label_to_folder_k", "rb").read())
 
     print('[INFO] key points training...')
     print("[INFO] obtaining data...")
@@ -154,14 +153,14 @@ if __name__ == '__main__':
         #     print("[INFO] the training took..." + str(end - start) + "second")
         # print("_______________________________________________________________________________________________________")
 
-        DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
-        for i in range(4):
-            start = int(round(time.time()))
-            print(f"[INFO] edges keypoints training {i}")
-            train(f"_ke_{i}_")
-            end = int(round(time.time()))
-            print("[INFO] the training took..." + str(end - start) + "second")
-        print("_______________________________________________________________________________________________________")
+        # DATA_PATH_TRAIN = LOCAL_MARS_EDGES_20
+        # for i in range(4):
+        #     start = int(round(time.time()))
+        #     print(f"[INFO] edges keypoints training {i}")
+        #     train(f"_ke_{i}_")
+        #     end = int(round(time.time()))
+        #     print("[INFO] the training took..." + str(end - start) + "second")
+        # print("_______________________________________________________________________________________________________")
 
         DATA_PATH_TRAIN = SERVER_MARS_KEYPTS_20
         for i in range(4):
