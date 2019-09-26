@@ -5,10 +5,10 @@ CSV_OUTPUTS_DIR = '../csv_outputs'
 
 import os
 import pickle
-import pandas as pd
-import numpy as np
 
 import cv2
+import numpy as np
+import pandas as pd
 import scipy.misc
 
 
@@ -33,6 +33,7 @@ def create_groups():
                 scipy.misc.imsave(
                     os.path.join(os.path.join(PREDICTION_GROUPS, key, prediction + "_" + str(i) + ".jpg")), img)
 
+
 # stores the confusion metrix into csv file
 # the input parameter is the dictionary same as in the previous function
 def createConfusionMatrix(dict_of_predictions: dict):
@@ -48,6 +49,7 @@ def createConfusionMatrix(dict_of_predictions: dict):
         for value in values:
             confusion_matrix[key][value] = confusion_matrix[key][value] + 1
     confusion_matrix.to_csv(os.path.join(CSV_OUTPUTS_DIR, 'confusion_matrix.csv'))
+
 
 if __name__ == '__main__':
     createConfusionMatrix(pickle.loads(open(identitiesToPredictidValues_dir, "rb").read()))
