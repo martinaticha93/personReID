@@ -153,20 +153,20 @@ if __name__ == '__main__':
         #     print("[INFO] the training took..." + str(end - start) + "second")
         # print("_______________________________________________________________________________________________________")
 
-        # DATA_PATH_TRAIN = LOCAL_MARS_EDGES_20
-        # for i in range(4):
-        #     start = int(round(time.time()))
-        #     print(f"[INFO] edges keypoints training {i}")
-        #     train(f"_ke_{i}_")
-        #     end = int(round(time.time()))
-        #     print("[INFO] the training took..." + str(end - start) + "second")
-        # print("_______________________________________________________________________________________________________")
-
-        DATA_PATH_TRAIN = SERVER_MARS_KEYPTS_20
+        DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
         for i in range(4):
             start = int(round(time.time()))
-            print(f"[INFO] key points training {i}")
-            train(f"_k_{i}_")
+            print(f"[INFO] edges keypoints training {i}")
+            train(f"_ke_{i}_")
             end = int(round(time.time()))
             print("[INFO] the training took..." + str(end - start) + "second")
         print("_______________________________________________________________________________________________________")
+
+        # DATA_PATH_TRAIN = SERVER_MARS_KEYPTS_20
+        # for i in range(4):
+        #     start = int(round(time.time()))
+        #     print(f"[INFO] key points training {i}")
+        #     train(f"_k_{i}_")
+        #     end = int(round(time.time()))
+        #     print("[INFO] the training took..." + str(end - start) + "second")
+        # print("_______________________________________________________________________________________________________")

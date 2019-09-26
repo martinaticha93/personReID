@@ -23,8 +23,8 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
         self.TRAINING_SAMPLES = len(trainX)
         self.TEST_SAMPLES = len(testX)
 
-        self.INIT_LR = 0.005
-        self.EPOCHS = 100
+        self.INIT_LR = 0.001
+        self.EPOCHS = 50
         self.BS = 30
 
         print("[INFO] train data size: " + str(self.TRAINING_SAMPLES))
