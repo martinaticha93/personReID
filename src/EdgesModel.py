@@ -23,7 +23,7 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
         self.TRAINING_SAMPLES = len(trainX)
         self.TEST_SAMPLES = len(testX)
 
-        self.INIT_LR = 0.001
+        self.INIT_LR = 0.005
         self.EPOCHS = 1000
         self.BS = 30
 
