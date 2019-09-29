@@ -1,4 +1,5 @@
 import os
+import pickle
 from typing import List
 
 import cv2
@@ -189,9 +190,13 @@ class DataReader:
 
         data, labels, groups, num_of_identities, label_to_identity = load_data()
 
-        cv = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups))
-        train_indices = cv[0][0]
-        test_indices = cv[0][1]
+        train_test_split = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups))
+        f = open("pickles/train_test_split", "wb")
+        f.write(pickle.dumps(train_test_split))
+        train_test_split = pickle.loads(open("pickles/train_test_split", "rb").read())
+
+        train_indices = train_test_split[0][0]
+        test_indices = train_test_split[0][1]
         data_train = data[train_indices]
         data_test = data[test_indices]
         labels_train = labels[train_indices]
