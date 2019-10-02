@@ -18,7 +18,12 @@ class KeyPtsNetwork:
         model.add((LSTM(input_shape=input_shape, units=34, return_sequences=False, dropout=0.2)))
         model.add(BatchNormalization())
         model.add(Dense(
-            units=2 * num_of_classes,
+            units=34,
+            activation='relu',
+            kernel_initializer='random_uniform',
+            bias_initializer='zeros'))
+        model.add(Dense(
+            units=34,
             activation='relu',
             kernel_initializer='random_uniform',
             bias_initializer='zeros'))

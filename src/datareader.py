@@ -162,7 +162,7 @@ class DataReader:
             unique_cameras = 0
             identities = os.listdir(data_path)
             identities.sort()
-            for identity in identities:
+            for identity in identities[0:50]:
                 num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity, load_img)
 
                 if num_of_videos_for_identity >= MIN_NUM_OF_VIDEOS:
@@ -193,6 +193,7 @@ class DataReader:
         train_test_split = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups))
         f = open("pickles/train_test_split", "wb")
         f.write(pickle.dumps(train_test_split))
+        f.close()
         train_test_split = pickle.loads(open("pickles/train_test_split", "rb").read())
 
         train_indices = train_test_split[0][0]
