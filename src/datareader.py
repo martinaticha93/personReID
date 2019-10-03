@@ -162,7 +162,7 @@ class DataReader:
             unique_cameras = 0
             identities = os.listdir(data_path)
             identities.sort()
-            for identity in identities[0:50]:
+            for identity in identities:
                 num_of_videos_for_identity, identity_data = _load_one_identity(data_path, identity, load_img)
 
                 if num_of_videos_for_identity >= MIN_NUM_OF_VIDEOS:
