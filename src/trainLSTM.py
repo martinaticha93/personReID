@@ -58,10 +58,10 @@ def _train_on_key_points(name_of_run):
 
     print('[INFO] key points training...')
     print("[INFO] obtaining data...")
-    #
-    # trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
-    #     DATA_PATH_TRAIN, load_key_pts
-    # )
+
+    trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
+        DATA_PATH_TRAIN, load_key_pts
+    )
     #
     # f = open("pickles/trainX_k", "wb")
     # f.write(pickle.dumps(trainX))
@@ -77,14 +77,14 @@ def _train_on_key_points(name_of_run):
     # f.write(pickle.dumps(label_to_folder))
     # f = open("pickles/groups_train_k", "wb")
     # f.write(pickle.dumps(groups_train))
-
-    trainX = pickle.loads(open("pickles/trainX_k", "rb").read())
-    trainY = pickle.loads(open("pickles/trainY_k", "rb").read())
-    testX = pickle.loads(open("pickles/testX_k", "rb").read())
-    testY = pickle.loads(open("pickles/testY_k", "rb").read())
-    num_of_classes = pickle.loads(open("pickles/num_of_classes_k", "rb").read())
-    label_to_folder = pickle.loads(open("pickles/label_to_folder_k", "rb").read())
-    groups_train = pickle.loads(open("pickles/groups_train_k", "rb").read())
+    #
+    # trainX = pickle.loads(open("pickles/trainX_k", "rb").read())
+    # trainY = pickle.loads(open("pickles/trainY_k", "rb").read())
+    # testX = pickle.loads(open("pickles/testX_k", "rb").read())
+    # testY = pickle.loads(open("pickles/testY_k", "rb").read())
+    # num_of_classes = pickle.loads(open("pickles/num_of_classes_k", "rb").read())
+    # label_to_folder = pickle.loads(open("pickles/label_to_folder_k", "rb").read())
+    # groups_train = pickle.loads(open("pickles/groups_train_k", "rb").read())
 
     model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
