@@ -58,5 +58,5 @@ class EdgesNetwork:
             units=num_of_classes,
             activation='softmax'))
 
-        plot_model(model, to_file='model.png', show_shapes=True)
+        # plot_model(model, to_file='model.png', show_shapes=True)
         return model
