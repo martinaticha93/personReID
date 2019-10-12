@@ -144,14 +144,14 @@ if __name__ == '__main__':
     start = int(round(time.time()))
     with tf.device('/gpu:' + GPU):
 
-        # DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
-        # for i in range(4):
-        #     start = int(round(time.time()))
-        #     print(f"[INFO] edges training {i}")
-        #     train(f"_e_{i}_")
-        #     end = int(round(time.time()))
-        #     print("[INFO] the training took..." + str(end - start) + "second")
-        # print("_______________________________________________________________________________________________________")
+        DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
+        for i in range(4):
+            start = int(round(time.time()))
+            print(f"[INFO] edges training {i}")
+            train(f"_e_{i}_")
+            end = int(round(time.time()))
+            print("[INFO] the training took..." + str(end - start) + "second")
+        print("_______________________________________________________________________________________________________")
 
         DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
         for i in range(4):
