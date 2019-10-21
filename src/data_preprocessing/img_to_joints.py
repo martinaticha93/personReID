@@ -43,6 +43,7 @@ class PP:
             [0, 0, 0]
         ]
         img_edges = cv2.imread(os.path.join(edges_dir, identity, img_name))
+        img_edges[:, :, :] = 255
 
         points = points[2:17, 0:2]
         # hends
@@ -142,7 +143,7 @@ class PP:
 if __name__ == '__main__':
     # p = PP()
     # p.draw_points()
-    output_dir = '/media/martina/Data/School/CTU/thesis/data/mars_edges_with_kpts_selected_20_64x64'
+    output_dir = '/media/martina/Data/School/CTU/thesis/data/mars_key_points_selected_20_64x64'
     input_dir = '/media/martina/Data/School/CTU/thesis/data/mars'
     edges_dir = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20_64x64'
     keypts_dir = '/media/martina/Data/School/CTU/thesis/data/mars_key_points_selected_20'
@@ -158,6 +159,7 @@ if __name__ == '__main__':
     all_identities = os.listdir(keypts_dir)
     all_identities.sort()
     p = PP()
+    os.mkdir(output_dir)
     for identity in all_identities:
         print(identity)
         os.mkdir(os.path.join(output_dir, identity))

@@ -19,14 +19,13 @@ module load gcccuda/2018b
 
 module load GCC/7.3.0-2.30
 
-
 module load scikit-learn/0.19.2-foss-2018b-Python-3.6.4 
 
 module load Keras/2.2.4-fosscuda-2018b-Python-3.6.6 
 
 nvidia-smi
 
-export CUDA_VISIBLE_DEVICES=6
+export CUDA_VISIBLE_DEVICES=1
 
 
 
