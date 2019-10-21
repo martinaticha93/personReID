@@ -29,8 +29,10 @@ def train_generator(data, labels, batch_size, num_of_classes, dict):
         yield x_train, y_train.reshape(y_train.shape[0], y_train.shape[2])
 
 
-def predict_generator(data, num_of_classes):
-    i = -1
-    while i < num_of_classes - 1:
-        i = i + 1
-        yield data[[i], 0:9]
+def predict_generator(data):
+    for i in range(data.shape[0]):
+        yield np.expand_dims(data[i, :, :], axis=0)
+    # i = -1
+    # while i < num_of_classes - 1:
+    #     i = i + 1
+    #     yield data[[i], 0:9]

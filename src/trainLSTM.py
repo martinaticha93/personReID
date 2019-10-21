@@ -16,17 +16,26 @@ SERVER_MARS_EDGES_20 = "../data/mars_edges_selected_20"
 SERVER_MARS_KEYPTS_20 = "../data/mars_key_points_selected_20"
 SERVER_MARS_EDGES_KEYPTS_20 = "../data/mars_edges_with_kpts_selected_20_64x64"
 
-LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20'
+LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20_64x64'
 LOCAL_MARS_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_key_points_selected_20'
 LOCAL_MARS_EDGES_POSTPRO_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_postpro_selected_20'
-LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_with_kpts_selected_20_200x200'
+LOCAL_MARS_EDGES_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_with_kpts_selected_20_64x64'
 
 MARS_EDGES_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars_joints/joints_edges'
 MARS_LOCAL = '/media/martina/Data/School/CTU/thesis/data/mars'
 
-DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
-MODEL = "model"
+DATA_PATH_TRAIN = LOCAL_MARS_KEYPTS_20
+MODEL_k = "models/model_k"
+MODEL_e = "models/model_e"
+MODEL_ke = "models/model_ke"
 LABELS = "labels"
+TEST_X_KEY_POINTS = 'pickles/testX_k'
+TEST_Y_KEY_POINTS = 'pickles/testY_k'
+TEST_X_EDGES = 'pickles/testX_e'
+TEST_Y_EDGES = 'pickles/testY_e'
+TEST_X_EDGES_AND_KPTS = 'pickles/testX_ek'
+TEST_Y_EDGES_AND_KPTS = 'pickles/testY_ek'
+
 GPU = "6"
 
 
@@ -45,19 +54,44 @@ class TestCallback(Callback):
         print('\nTesting loss: {}, acc: {}\n'.format(loss, acc))
 
 
-def _train_on_key_points():
+def _train_on_key_points(name_of_run):
+
     print('[INFO] key points training...')
     print("[INFO] obtaining data...")
 
     trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
         DATA_PATH_TRAIN, load_key_pts
     )
+    #
+    # f = open("pickles/trainX_k", "wb")
+    # f.write(pickle.dumps(trainX))
+    # f = open("pickles/trainY_k", "wb")
+    # f.write(pickle.dumps(trainY))
+    # f = open(TEST_X_KEY_POINTS, "wb")
+    # f.write(pickle.dumps(testX))
+    # f = open(TEST_Y_KEY_POINTS, "wb")
+    # f.write(pickle.dumps(testY))
+    # f = open("pickles/num_of_classes_k", "wb")
+    # f.write(pickle.dumps(num_of_classes))
+    # f = open("pickles/label_to_folder_k", "wb")
+    # f.write(pickle.dumps(label_to_folder))
+    # f = open("pickles/groups_train_k", "wb")
+    # f.write(pickle.dumps(groups_train))
+    #
+    # trainX = pickle.loads(open("pickles/trainX_k", "rb").read())
+    # trainY = pickle.loads(open("pickles/trainY_k", "rb").read())
+    # testX = pickle.loads(open("pickles/testX_k", "rb").read())
+    # testY = pickle.loads(open("pickles/testY_k", "rb").read())
+    # num_of_classes = pickle.loads(open("pickles/num_of_classes_k", "rb").read())
+    # label_to_folder = pickle.loads(open("pickles/label_to_folder_k", "rb").read())
+    # groups_train = pickle.loads(open("pickles/groups_train_k", "rb").read())
 
     model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
+    model.get_model().save(MODEL_k + name_of_run)
 
 
-def _train_on_edges():
+def _train_on_edges(name_of_run):
     print('[INFO] edges training...')
     print("[INFO] obtaining data...")
 
@@ -65,55 +99,74 @@ def _train_on_edges():
         DATA_PATH_TRAIN, load_edges
     )
 
+    f = open(TEST_X_EDGES + name_of_run, "wb")
+    f.write(pickle.dumps(testX))
+    f = open(TEST_Y_EDGES + name_of_run, "wb")
+    f.write(pickle.dumps(testY))
+    f = open("pickles/label_to_folder_e" + name_of_run, "wb")
+    f.write(pickle.dumps(label_to_folder))
+
     model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
+    model.get_model().save(MODEL_e + name_of_run)
 
 
-def train():
-    if 'key' in DATA_PATH_TRAIN:
-        _train_on_key_points()
+def _train_on_edges_and_kpts(name_of_run):
+    print('[INFO] edges and key points training...')
+    print("[INFO] obtaining data...")
+
+    trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
+        DATA_PATH_TRAIN, load_edges
+    )
+
+    f = open(TEST_X_EDGES_AND_KPTS + name_of_run, "wb")
+    f.write(pickle.dumps(testX))
+    f = open(TEST_Y_EDGES_AND_KPTS + name_of_run, "wb")
+    f.write(pickle.dumps(testY))
+    f = open("pickles/label_to_folder_ke" + name_of_run, "wb")
+    f.write(pickle.dumps(label_to_folder))
+
+    model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
+    model.fit()
+    model.get_model().save(MODEL_ke + name_of_run)
+
+
+def train(name_of_run):
+    if 'edges_with_kpts' in DATA_PATH_TRAIN:
+        _train_on_edges_and_kpts(name_of_run)
+    elif 'key' in DATA_PATH_TRAIN:
+        _train_on_key_points(name_of_run)
     elif 'edges' in DATA_PATH_TRAIN:
-        _train_on_edges()
-
-    # model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
-    # model.fit()
-
-    # model = LSTMModel(
-    #     num_of_classes=num_of_classes,
-    #     training_samples=len(trainX),
-    #     test_samples=len(testX)
-    # )
-
-    tuned_params = {
-        "EPOCHS": [100],
-        "INIT_LR": [0.001, 0.0004],
-        "DECAY_FACTOR": [0.8]
-    }
-
-    # split that is used for cross validation in grid search - for each split there's a run of the alg
-    # seems to be useless because this way it splits twice
-    # cv = list(GroupShuffleSplit(n_splits=3).split(trainX, trainY, groups_train))
-    # gs = GridSearchCV(model, tuned_params, cv=cv)
-    # fit_params = {
-    #     'label_to_folder': label_to_folder,
-    #     'testX': testX,
-    #     'testY': testY
-    # }
-    #
-    # gs.fit(trainX, trainY, fit_params=fit_params)
-
-    # print(sorted(gs.cv_results_.keys()))
-    # print(gs.best_params_)
-    return None, None
+        _train_on_edges(name_of_run)
 
 
 if __name__ == '__main__':
     start = int(round(time.time()))
     with tf.device('/gpu:' + GPU):
-        model, label_to_folder = train()
-        end = int(round(time.time()))
-        print("[INFO] the training took..." + str(end - start) + "second")
-        model.save(MODEL)
-        f = open(LABELS, "wb")
-        f.write(pickle.dumps(label_to_folder))
-        f.close()
+
+        DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
+        for i in range(4):
+            start = int(round(time.time()))
+            print(f"[INFO] edges training {i}")
+            train(f"_e_{i}_")
+            end = int(round(time.time()))
+            print("[INFO] the training took..." + str(end - start) + "second")
+        print("_______________________________________________________________________________________________________")
+
+        DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
+        for i in range(4):
+            start = int(round(time.time()))
+            print(f"[INFO] edges keypoints training {i}")
+            train(f"_ke_{i}_")
+            end = int(round(time.time()))
+            print("[INFO] the training took..." + str(end - start) + "second")
+        print("_______________________________________________________________________________________________________")
+
+        # DATA_PATH_TRAIN = SERVER_MARS_KEYPTS_20
+        # for i in range(4):
+        #     start = int(round(time.time()))
+        #     print(f"[INFO] key points training {i}")
+        #     train(f"_k_{i}_")
+        #     end = int(round(time.time()))
+        #     print("[INFO] the training took..." + str(end - start) + "second")
+        # print("_______________________________________________________________________________________________________")

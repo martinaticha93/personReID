@@ -1,4 +1,5 @@
 import os
+import pickle
 from typing import List
 
 import cv2
@@ -91,7 +92,7 @@ def load_edges(data_path):
 
 
 def load_key_pts(data_path):
-    return np.load(data_path).flatten()
+    return np.load(data_path)[:, 0:2].flatten()
 
 
 def _load_one_identity(data_path, identity, load_img):
@@ -146,7 +147,7 @@ class DataReader:
     # and "groups_train" which is a list denoting the group of a video. Each group contains videos for unique
     # combination (identity, camera). This list is then used to split data into training a validation test so that
     # videos of the same (identity, camera) combination are not present in both data sets
-    def prepare_data(data_path, load_img, test_size=0.2):
+    def prepare_data(data_path, load_img, test_size=0.1):
         print("[INFO] loading images...")
 
         def _videos_to_img_key(video: list, key: str):
@@ -175,7 +176,8 @@ class DataReader:
                                                                          unique_cameras,
                                                                          num_of_identities)
 
-                    print("[INFO] loaded identity " + identity)
+                    if int(identity) % 10 == 0:
+                        print("[INFO] loaded identity " + identity)
                 else:
                     print("[INFO] skipped identity " + identity)
 
@@ -188,9 +190,14 @@ class DataReader:
 
         data, labels, groups, num_of_identities, label_to_identity = load_data()
 
-        cv = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups))
-        train_indices = cv[0][0]
-        test_indices = cv[0][1]
+        # train_test_split = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups))
+        # f = open("pickles/train_test_split", "wb")
+        # f.write(pickle.dumps(train_test_split))
+        # f.close()
+        train_test_split = pickle.loads(open("pickles/train_test_split", "rb").read())
+
+        train_indices = train_test_split[0][0]
+        test_indices = train_test_split[0][1]
         data_train = data[train_indices]
         data_test = data[test_indices]
         labels_train = labels[train_indices]
