@@ -36,7 +36,7 @@ TEST_Y_EDGES = 'pickles/testY_e'
 TEST_X_EDGES_AND_KPTS = 'pickles/testX_ek'
 TEST_Y_EDGES_AND_KPTS = 'pickles/testY_ek'
 
-GPU = "1"
+GPU = "4"
 
 
 class TestCallback(Callback):
