@@ -15,6 +15,7 @@ SIMPLE = "../data/simple_data_set"
 SERVER_MARS_EDGES_20 = "../data/mars_edges_selected_20"
 SERVER_MARS_KEYPTS_20 = "../data/mars_key_points_selected_20"
 SERVER_MARS_EDGES_KEYPTS_20 = "../data/mars_edges_with_kpts_selected_20_64x64"
+SERVER_MARS_KPTS_IMGS_20 = "../data/mars_key_points_selected_20_64x64"
 
 LOCAL_MARS_EDGES_20 = '/media/martina/Data/School/CTU/thesis/data/mars_edges_selected_20_64x64'
 LOCAL_MARS_KEYPTS_20 = '/media/martina/Data/School/CTU/thesis/data/mars_key_points_selected_20'
@@ -55,40 +56,36 @@ class TestCallback(Callback):
 
 
 def _train_on_key_points(name_of_run):
-
     print('[INFO] key points training...')
     print("[INFO] obtaining data...")
 
     trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
         DATA_PATH_TRAIN, load_key_pts
     )
-    #
-    # f = open("pickles/trainX_k", "wb")
-    # f.write(pickle.dumps(trainX))
-    # f = open("pickles/trainY_k", "wb")
-    # f.write(pickle.dumps(trainY))
-    # f = open(TEST_X_KEY_POINTS, "wb")
-    # f.write(pickle.dumps(testX))
-    # f = open(TEST_Y_KEY_POINTS, "wb")
-    # f.write(pickle.dumps(testY))
-    # f = open("pickles/num_of_classes_k", "wb")
-    # f.write(pickle.dumps(num_of_classes))
-    # f = open("pickles/label_to_folder_k", "wb")
-    # f.write(pickle.dumps(label_to_folder))
-    # f = open("pickles/groups_train_k", "wb")
-    # f.write(pickle.dumps(groups_train))
-    #
-    # trainX = pickle.loads(open("pickles/trainX_k", "rb").read())
-    # trainY = pickle.loads(open("pickles/trainY_k", "rb").read())
-    # testX = pickle.loads(open("pickles/testX_k", "rb").read())
-    # testY = pickle.loads(open("pickles/testY_k", "rb").read())
-    # num_of_classes = pickle.loads(open("pickles/num_of_classes_k", "rb").read())
-    # label_to_folder = pickle.loads(open("pickles/label_to_folder_k", "rb").read())
-    # groups_train = pickle.loads(open("pickles/groups_train_k", "rb").read())
 
     model = KeyPtsModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
     model.fit()
     model.get_model().save(MODEL_k + name_of_run)
+
+def _train_on_kpts_imgs(name_of_run):
+    print('[INFO] kpts imgs training...')
+    print("[INFO] obtaining data...")
+
+    trainX, trainY, testX, testY, num_of_classes, label_to_folder, groups_train = DataReader.prepare_data(
+        DATA_PATH_TRAIN, load_edges
+    )
+
+    f = open(TEST_X_EDGES + name_of_run, "wb")
+    f.write(pickle.dumps(testX))
+    f = open(TEST_Y_EDGES + name_of_run, "wb")
+    f.write(pickle.dumps(testY))
+    f = open("pickles/label_to_folder_e" + name_of_run, "wb")
+    f.write(pickle.dumps(label_to_folder))
+
+    model = EdgesModel(trainX, trainY, testX, testY, num_of_classes, label_to_folder)
+    model.fit()
+    model.get_model().save(MODEL_e + name_of_run)
+
 
 
 def _train_on_edges(name_of_run):
@@ -144,20 +141,29 @@ if __name__ == '__main__':
     start = int(round(time.time()))
     with tf.device('/gpu:' + GPU):
 
-        # DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
-        # for i in range(4):
-        #     start = int(round(time.time()))
-        #     print(f"[INFO] edges training {i}")
-        #     train(f"_e_{i}_")
-        #     end = int(round(time.time()))
-        #     print("[INFO] the training took..." + str(end - start) + "second")
-        # print("_______________________________________________________________________________________________________")
+        DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
+        for i in range(5):
+            start = int(round(time.time()))
+            print(f"[INFO] edges training {i}")
+            train(f"_e_{i}_")
+            end = int(round(time.time()))
+            print("[INFO] the training took..." + str(end - start) + "second")
+        print("_______________________________________________________________________________________________________")
 
         DATA_PATH_TRAIN = SERVER_MARS_EDGES_KEYPTS_20
-        for i in range(4):
+        for i in range(5):
             start = int(round(time.time()))
             print(f"[INFO] edges keypoints training {i}")
             train(f"_ke_{i}_")
+            end = int(round(time.time()))
+            print("[INFO] the training took..." + str(end - start) + "second")
+        print("_______________________________________________________________________________________________________")
+
+        DATA_PATH_TRAIN = SERVER_MARS_KPTS_IMGS_20
+        for i in range(5):
+            start = int(round(time.time()))
+            print(f"[INFO] kpts imgs training {i}")
+            train(f"_ki_{i}_")
             end = int(round(time.time()))
             print("[INFO] the training took..." + str(end - start) + "second")
         print("_______________________________________________________________________________________________________")
