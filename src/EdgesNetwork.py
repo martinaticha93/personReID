@@ -1,4 +1,4 @@
-from keras.layers import ConvLSTM2D, Dense, BatchNormalization, AveragePooling2D, Flatten
+from keras.layers import ConvLSTM2D, Dense, BatchNormalization, AveragePooling2D, Flatten, Dropout
 from keras.models import Sequential
 from keras.utils import plot_model
 
@@ -24,7 +24,7 @@ class EdgesNetwork:
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
             return_sequences=True,
-            dropout=0.2
+            dropout=0.9
         ))
         model.add(BatchNormalization())
         model.add(ConvLSTM2D(
@@ -35,7 +35,7 @@ class EdgesNetwork:
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
             return_sequences=True,
-            dropout=0.2))
+            dropout=0.9))
         model.add(BatchNormalization())
         model.add(ConvLSTM2D(
             filters=80,
@@ -45,10 +45,11 @@ class EdgesNetwork:
             kernel_initializer='random_uniform',
             bias_initializer='zeros',
             return_sequences=False,
-            dropout=0.2))
+            dropout=0.9))
         model.add(BatchNormalization())
         model.add(AveragePooling2D((3, 3), strides=2))
         model.add(Flatten())
+        model.add(Dropout(0.9))
         model.add(Dense(
             units=4 * num_of_classes,
             activation='relu',

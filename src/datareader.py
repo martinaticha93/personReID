@@ -190,7 +190,7 @@ class DataReader:
 
         data, labels, groups, num_of_identities, label_to_identity = load_data()
 
-        # train_test_split = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups))
+        train_test_split = list(GroupShuffleSplit(test_size=test_size, n_splits=1).split(data, labels, groups))
         # f = open("pickles/train_test_split", "wb")
         # f.write(pickle.dumps(train_test_split))
         # f.close()

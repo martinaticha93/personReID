@@ -12,7 +12,7 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
         self.trainY = trainY
         self.testX = testX
 
-        img_width = testX[0,0].shape[0]
+        img_width = testX[0, 0].shape[0]
 
         self.testY = testY
 
@@ -23,7 +23,7 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
         self.TRAINING_SAMPLES = len(trainX)
         self.TEST_SAMPLES = len(testX)
 
-        self.INIT_LR = 0.005
+        self.INIT_LR = 0.0001
         self.EPOCHS = 500
         self.BS = 30
 
@@ -39,11 +39,9 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
 
     def fit(self):
         self.model.fit_generator(
-            generator=train_generator(self.trainX, self.trainY, self.BS, self.num_of_classes,
-                                      self.label_to_folder),
+            generator=train_generator(self.trainX, self.trainY, self.BS, self.num_of_classes, self.label_to_folder),
             steps_per_epoch=self.TRAINING_SAMPLES / self.BS,
-            validation_data=train_generator(self.testX, self.testY, self.BS, self.num_of_classes,
-                                            self.label_to_folder),
+            validation_data=train_generator(self.testX, self.testY, self.BS, self.num_of_classes, self.label_to_folder),
             validation_steps=self.TRAINING_SAMPLES / self.BS,
             epochs=self.EPOCHS,
             verbose=1,
@@ -52,7 +50,7 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
 
     def predict(self, X):
         print("[INFO] predicting..")
-        return self.model.predict_generator(generator=predict_generator(X, num_of_classes=X.shape[0]), steps=X.shape[0])
+        return self.model.predict_generator(generator=predict_generator(X), steps=X.shape[0])
 
     def score(self, X, y, **kwargs):
         _, acc = self.model.evaluate_generator(
