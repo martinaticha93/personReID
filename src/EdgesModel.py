@@ -23,18 +23,19 @@ class EdgesModel(BaseEstimator, ClassifierMixin):
         self.TRAINING_SAMPLES = len(trainX)
         self.TEST_SAMPLES = len(testX)
 
-        self.INIT_LR = 0.005
-        self.EPOCHS = 500
+        self.INIT_LR = 0.001
+        self.EPOCHS = 200
         self.BS = 30
 
         print("[INFO] train data size: " + str(self.TRAINING_SAMPLES))
         print("[INFO] test data size: " + str(self.TEST_SAMPLES))
         print("[INFO] steps per epoch: " + str(self.TRAINING_SAMPLES / self.BS))
+        print("[INFO] initial learning rate: " + str(self.INIT_LR))
 
         self.tensorboard = TensorBoard(log_dir="logs/{}".format(self.INIT_LR))
 
         print("[INFO] training network...")
-        opt = SGD(lr=self.INIT_LR, decay=self.INIT_LR / num_of_classes)
+        opt = SGD(lr=self.INIT_LR, decay=self.INIT_LR / self.EPOCHS)
         self.model.compile(loss="categorical_crossentropy", optimizer=opt, metrics=["categorical_accuracy"])
 
     def fit(self):
