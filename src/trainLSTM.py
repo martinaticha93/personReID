@@ -131,6 +131,8 @@ def _train_on_edges_and_kpts(name_of_run):
 def train(name_of_run):
     if 'edges_with_kpts' in DATA_PATH_TRAIN:
         _train_on_edges_and_kpts(name_of_run)
+    elif 'key_points_selected_20_64x64' in DATA_PATH_TRAIN:
+        _train_on_edges_and_kpts(name_of_run)
     elif 'key' in DATA_PATH_TRAIN:
         _train_on_key_points(name_of_run)
     elif 'edges' in DATA_PATH_TRAIN:
