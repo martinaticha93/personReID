@@ -25,7 +25,7 @@ module load Keras/2.2.4-fosscuda-2018b-Python-3.6.6
 
 nvidia-smi
 
-export CUDA_VISIBLE_DEVICES=7
+export CUDA_VISIBLE_DEVICES=4
 
 
 
