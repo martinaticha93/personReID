@@ -144,7 +144,7 @@ if __name__ == '__main__':
     with tf.device('/gpu:' + GPU):
 
         DATA_PATH_TRAIN = SERVER_MARS_EDGES_20
-        for i in range(5):
+        for i in range(1):
             start = int(round(time.time()))
             print(f"[INFO] edges training {i}")
             train(f"_e_{i}_")
